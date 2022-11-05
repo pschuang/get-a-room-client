@@ -9,7 +9,6 @@ const socket = io('http://localhost:8000', { autoConnect: false })
 
 // 記住 users 在哪個 room
 let rooms = {}
-let talking = 0
 
 const ChatBox = () => {
   socket.on('connect', () => {
@@ -22,11 +21,8 @@ const ChatBox = () => {
     { userId: '2', message: 'bbb' },
   ])
   const [userId, setUserId] = useState('1')
-  const [user, setUser] = useState('')
   const [currentRoomId, setCurrentRoomId] = useState(null) // 小賴新加入
-
-  // 現在跟誰聊天
-  const [nowTalkingTo, setNowTalkingTo] = useState(null)
+  const [isFriend, setIsFriend] = useState(false)
 
   // question page
   const [repliers, setRepliers] = useState([
@@ -53,21 +49,41 @@ const ChatBox = () => {
     },
   ])
 
+  // after login, get friends list // 小賴新加入
+  const [friends, setFriends] = useState([
+    { userId: 3, roomId: '5566', nickname: 'Japopo' },
+    { userId: 4, roomId: '5678', nickname: 'Shiela' },
+    { userId: 5, roomId: '5566', nickname: 'Ramona' },
+  ])
+
   // send button => render message & send message by socket.io
   const sendMessage = () => {
     console.log('rooms: ', rooms)
-    console.log('taking to user: ', talking)
-    console.log('now sending to room: ', rooms[talking])
-    console.log('now talking to: ', nowTalkingTo)
+    console.log('now sending to room: ', currentRoomId)
 
     // 把訊息送給正在聊天的人所在的 room
     socket.emit('send-message', {
-      roomId: rooms[nowTalkingTo],
+      roomId: currentRoomId,
       message: message,
       userId,
     })
     setMessage('') // 這是非同步的
     console.log('after', message)
+    setMessageQueue([...messageQueue, { userId, message }])
+  }
+
+  const sendMessageToFriend = () => {
+    socket.emit('send-message-to-friend', {
+      roomId: currentRoomId,
+      message: message,
+      userId,
+    })
+    console.log('msg to friend: ', {
+      roomId: currentRoomId,
+      message: message,
+      userId,
+    })
+    setMessage('')
     setMessageQueue([...messageQueue, { userId, message }])
   }
 
@@ -89,6 +105,11 @@ const ChatBox = () => {
     // })
   })
 
+  socket.on('receive-message-from-friend', (data) => {
+    console.log(data)
+    setMessageQueue([...messageQueue, data])
+  })
+
   socket.on('create-room-ok', ({ roomId, counterpart }) => {
     console.log('repliers before: ', repliers)
     let oldRepliers = [...repliers]
@@ -107,7 +128,6 @@ const ChatBox = () => {
     // 一開始寫的
     console.log('create room: ', roomId)
     console.log('counterpart', counterpart)
-    rooms[counterpart] = roomId // 紀錄跟這個 counterpart 聊天 是在哪一個 room
   })
 
   socket.on('create-room-fail', ({ message }) => {
@@ -121,12 +141,10 @@ const ChatBox = () => {
     console.log('is connected')
     // 發送這個 user 的 id 給 socket server
     socket.emit('user-id', userId)
-    setUser(`User ${userId}`)
   }
 
   socket.on('user', (user) => {
-    console.log(user)
-    setUser(user.name)
+    console.log(user.name)
   })
 
   const createChat = (replier) => {
@@ -136,26 +154,35 @@ const ChatBox = () => {
     } else {
       setCurrentRoomId(replier.roomId)
     }
-    //   socket.emit('create-room', { counterpart: replier.userId })
-
-    // 是不是要紀錄 replier 的 user_id?
-    setNowTalkingTo(replier.userId)
+    setIsFriend(replier.isFriend)
   }
+
+  const createChatWithFriend = (friend) => {
+    setCurrentRoomId(friend.roomId)
+    setIsFriend(true)
+    socket.emit('join-room', { roomId: friend.roomId })
+  }
+
+  socket.on('join-room-ok', () => {
+    console.log('successfully joined room!')
+  })
 
   return (
     <>
       <h2>
         Hello{' '}
         <span>
-          {user} {currentRoomId}
+          User {userId} {currentRoomId}
         </span>
+        <span>{isFriend ? 'is your friend' : 'not your friend'}</span>
       </h2>
       <div className="main-container">
         <div className="friend-list">
+          <h2>Repliers</h2>
           {repliers.map((replier) => {
             return (
               <div
-                data-id="2"
+                key={replier.userId}
                 onClick={() => createChat(replier)}
                 style={{
                   backgroundColor:
@@ -165,6 +192,20 @@ const ChatBox = () => {
                 }}
               >
                 {replier.nickname} {replier.roomId}
+              </div>
+            )
+          })}
+          <hr />
+          <h2>Friends</h2>
+          {friends.map((friend) => {
+            return (
+              <div
+                key={friend.userId}
+                onClick={() => {
+                  createChatWithFriend(friend)
+                }}
+              >
+                {friend.nickname} user id: {friend.userId}
               </div>
             )
           })}
@@ -189,7 +230,10 @@ const ChatBox = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button className="send-button" onClick={sendMessage}>
+        <button
+          className="send-button"
+          onClick={isFriend ? sendMessageToFriend : sendMessage}
+        >
           Send
         </button>
       </div>
@@ -209,11 +253,6 @@ const ChatBox = () => {
 }
 
 export default ChatBox
-// after login, get friends list // 小賴新加入
-//   const [friends, setFriends] = useState([
-//     { userId: 3, roomId: '1234', nickname: 'user 4' },
-//     { userId: 4, roomId: '5678', nickname: 'user 4' },
-//   ])
 
 // <div
 // data-id="1"
