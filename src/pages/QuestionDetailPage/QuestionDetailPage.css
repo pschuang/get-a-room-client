@@ -1,0 +1,7 @@
+.page-container {
+  display: flex;
+}
+
+.main-content-container {
+  flex: 1;
+}
