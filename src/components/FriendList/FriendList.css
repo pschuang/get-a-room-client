@@ -1,0 +1,94 @@
+.main-container {
+  display: flex;
+}
+
+.friend-list {
+  width: 20%;
+  margin: 10px auto;
+  border: 1px solid grey;
+}
+
+.friend-list > div {
+  text-align: center;
+  margin: 10px;
+  padding: 20px;
+  background-color: lightcyan;
+}
+
+.friend-list > div:hover {
+  cursor: pointer;
+}
+
+.message-container {
+  display: flex;
+  margin: 10px auto;
+  width: 70%;
+  height: 500px;
+  border: 1px solid black;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.message-container > div {
+  margin-bottom: 12px;
+}
+
+.my-message {
+  display: flex;
+  justify-content: end;
+}
+
+.counterpart-message {
+  display: flex;
+  justify-content: start;
+}
+
+.my-message > div,
+.counterpart-message > div {
+  padding: 12px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.my-message > div {
+  background-color: rgb(198, 255, 198);
+}
+
+.counterpart-message > div {
+  background-color: lightgrey;
+}
+
+.send-container,
+.user-container {
+  display: flex;
+  margin: 10px auto;
+  /* background-color: lightgray; */
+  justify-content: center;
+  align-items: center;
+}
+
+.send-container > input,
+.user-container > input {
+  height: 40px;
+  width: 58%;
+}
+
+input:focus {
+  outline: none;
+}
+
+.send-container > button,
+.user-container > button {
+  height: 40px;
+  width: 10%;
+  margin-left: 10px;
+  border: none;
+  border-radius: 9px;
+}
+
+h2 {
+  text-align: center;
+}
+span {
+  color: coral;
+}
