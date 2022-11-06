@@ -1,20 +1,23 @@
 // redirect
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import './ReplyList.css'
 
 const ReplyList = ({ repliers, socket, setRepliers }) => {
   const [isShowPopUp, setIsShowPopUp] = useState(false)
   const [createdRoomId, setCreatedRoomId] = useState(null)
+
   const navigate = useNavigate()
+
   const createChat = (replier) => {
-    //TODO: 是朋友的話不給進入進時聊天室
+    //TODO: 是朋友的話不給進入限時聊天室
     if (replier.roomId === null) {
       console.log(socket)
       socket.emit('create-room', { counterpart: replier.userId })
       //   setCurrentRoomId(null)
     } else {
       // 原本就已經有 roomId 就轉頁
-      navigate(`/chat/${replier.roomId}`)
+      navigate(`/friendChat/${replier.roomId}`)
     }
   }
 
@@ -24,7 +27,7 @@ const ReplyList = ({ repliers, socket, setRepliers }) => {
     console.log('room id: ', roomId)
     console.log('counterpart: ', counterpart)
     if (!isPassive) {
-      navigate(`/chat/${roomId}`)
+      navigate(`/matchChat/${roomId}`)
     } else {
       // show popup to notify
       setIsShowPopUp(true)
@@ -44,15 +47,20 @@ const ReplyList = ({ repliers, socket, setRepliers }) => {
           onClick={() => {
             createChat(replier)
           }}
+          className="reply"
         >
-          {replier.nickname} {replier.roomId}
+          <div className="replier">
+            <img src={replier.pictureURL} alt="" />
+            <p>{replier.nickname}</p>
+          </div>
+          <div>{replier.answer}</div>
         </div>
       ))}
       {isShowPopUp && (
         <div>
           <button
             onClick={() => {
-              navigate(`/chat/${createdRoomId}`)
+              navigate(`/matchChat/${createdRoomId}`)
             }}
           >
             Yes
