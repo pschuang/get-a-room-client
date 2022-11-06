@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import BulletinPage from './pages/BulletinPage/BulletinPage'
-import ChatRoom from './pages/ChatRoom/ChatRoom'
 import ChatRoomPage from './pages/ChatRoomPage/ChatRoomPage'
+import FriendChatRoomPage from './pages/FriendChatRoomPage/FriendChatRoomPage'
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage'
 import { io } from 'socket.io-client'
 import LoginInput from './components/LoginInput/LoginInput'
@@ -13,11 +13,11 @@ const App = () => {
   const [socket, setSocket] = useState(
     io('http://localhost:8000', { autoConnect: false })
   )
-  const [userId, setUserId] = useState('1')
+  const [userId, setUserId] = useState('')
 
   return (
     <>
-      <LoginInput userId={userId} setUserId={setUserId} socket={socket} />
+      <LoginInput setUserId={setUserId} socket={socket} />
       <Routes>
         <Route exact path="/" element={<BulletinPage />} />
         {/* <Route
@@ -25,16 +25,20 @@ const App = () => {
         path="/login"
         element={<BulletinPage setSocket={setSocket} />}
       /> */}
-        <Route exact path="/chatroom" element={<ChatRoom />} />
         <Route
           exact
-          path="/chat/:roomId"
+          path="/friendChat/:roomId"
+          element={<FriendChatRoomPage socket={socket} userId={userId} />}
+        />
+        <Route
+          exact
+          path="/matchChat/:roomId"
           element={<ChatRoomPage socket={socket} userId={userId} />}
         />
         <Route
           exact
           path="/question/:id"
-          element={<QuestionDetailPage socket={socket} />}
+          element={<QuestionDetailPage socket={socket} userId={userId} />}
         />
       </Routes>
     </>

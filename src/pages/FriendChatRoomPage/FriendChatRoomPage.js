@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom'
-import './ChatRoomPage.css'
+import './FriendChatRoomPage.css'
 import FriendList from '../../components/FriendList/FriendList'
 import ChatScreen from './ChatScreen/ChatScreen'
 
-const ChatRoomPage = ({ socket, userId }) => {
+const FriendChatRoomPage = ({ socket, userId }) => {
   const { roomId } = useParams()
   return (
     <>
-      <h1>Welcome to this ChatRoomPage</h1>
+      <h1>Welcome to this FriendChatRoomPage</h1>
       <h2>Room {roomId}</h2>
       <div className="page-container">
         <FriendList userId={userId} />
@@ -19,4 +19,4 @@ const ChatRoomPage = ({ socket, userId }) => {
   )
 }
 
-export default ChatRoomPage
+export default FriendChatRoomPage
