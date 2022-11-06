@@ -1,17 +1,25 @@
 import './FriendList.css'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from '../../api/axios'
 
-const FriendList = ({ socket }) => {
+const FriendList = ({ userId }) => {
+  const [friends, setFriends] = useState([])
   const navigate = useNavigate()
-  const friends = [
-    { userId: 3, roomId: '5566', nickname: 'Japopo' },
-    { userId: 4, roomId: '5678', nickname: 'Shiela' },
-    { userId: 5, roomId: '5566', nickname: 'Ramona' },
-  ]
+  useEffect(() => {
+    getFriends(userId)
+  }, [userId])
+
+  const getFriends = async (userId) => {
+    const response = await axios.get(`/friends/${userId}`)
+    console.log(response.data)
+    setFriends(response.data.friends)
+  }
 
   const createChatWithFriend = (friend) => {
-    socket.emit('join-room', { roomId: friend.roomId })
-    navigate(`/chat/${friend.roomId}`, { state: { isFriend: true } })
+    console.log(friend.roomId)
+    // socket.emit('join-room', { roomId: friend.roomId })
+    navigate(`/friendChat/${friend.roomId}`)
   }
 
   return (
@@ -22,8 +30,13 @@ const FriendList = ({ socket }) => {
           onClick={() => {
             createChatWithFriend(friend)
           }}
+          className="friend"
         >
-          {friend.nickname} user id: {friend.userId}
+          <img src={friend.pictureURL} alt="" />{' '}
+          <p>
+            {' '}
+            {friend.nickname} user id: {friend.userId}
+          </p>
         </div>
       ))}
     </div>
