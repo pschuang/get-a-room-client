@@ -54,7 +54,10 @@ const ChatScreen = ({ socket, userId, roomId }) => {
               message.userId == userId ? 'my-message' : 'counterpart-message'
             }
           >
-            <div>{message.message}</div>
+            <div>
+              {message.message} @{' '}
+              <span style={{ color: 'navy' }}>{message.created_at}</span>
+            </div>
           </div>
         ))}
       </div>
