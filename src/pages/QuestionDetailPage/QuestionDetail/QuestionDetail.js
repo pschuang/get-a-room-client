@@ -12,7 +12,7 @@ const QuestionDetail = ({ questionId, socket }) => {
   }, [])
 
   const getQuestionsDetails = async () => {
-    const response = await axios.get('/questions/details')
+    const response = await axios.get(`/questions/details/${questionId}`)
     setContent(response.data.content)
     setRepliers(response.data.repliers)
     console.log(response.data.content)
