@@ -19,7 +19,7 @@ const App = () => {
     <>
       <LoginInput setUserId={setUserId} socket={socket} />
       <Routes>
-        <Route exact path="/" element={<BulletinPage />} />
+        <Route exact path="/" element={<BulletinPage userId={userId} />} />
         {/* <Route
         exact
         path="/login"
