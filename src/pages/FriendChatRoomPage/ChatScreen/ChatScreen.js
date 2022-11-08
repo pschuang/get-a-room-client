@@ -51,7 +51,7 @@ const ChatScreen = ({ socket, userId, roomId }) => {
           <div
             key={index}
             className={
-              message.userId === userId ? 'my-message' : 'counterpart-message'
+              message.userId == userId ? 'my-message' : 'counterpart-message'
             }
           >
             <div>{message.message}</div>
