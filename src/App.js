@@ -4,6 +4,7 @@ import BulletinPage from './pages/BulletinPage/BulletinPage'
 import ChatRoomPage from './pages/ChatRoomPage/ChatRoomPage'
 import FriendChatRoomPage from './pages/FriendChatRoomPage/FriendChatRoomPage'
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage'
+import SignUpPage from './pages/SignUpPage/SignUpPage'
 import { io } from 'socket.io-client'
 import LoginInput from './components/LoginInput/LoginInput'
 
@@ -40,6 +41,7 @@ const App = () => {
           path="/question/:id"
           element={<QuestionDetailPage socket={socket} userId={userId} />}
         />
+        <Route exact path="/signup" element={<SignUpPage />} />
       </Routes>
     </>
   )
