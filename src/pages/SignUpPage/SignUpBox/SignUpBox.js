@@ -34,7 +34,16 @@ const SignUpBox = () => {
         picture_id: parseInt(pictureId),
       },
     })
-    console.log(response.data)
+    console.log(response)
+    setName('')
+    setNickname('')
+    setEmail('')
+    setPassword('')
+    setPictureId('')
+    if (response.status === 200) {
+      alert('you sign up successfully')
+      navigate('/signin')
+    }
   }
   return (
     <div className="signup-main-container">
