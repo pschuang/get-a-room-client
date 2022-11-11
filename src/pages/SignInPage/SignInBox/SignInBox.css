@@ -1,4 +1,4 @@
-.signup-main-container {
+.signin-main-container {
   display: flex;
   width: 50%;
   margin: 50px auto;
@@ -6,11 +6,11 @@
   border-radius: 16px;
 }
 
-.signup-right-half {
+.signin-right-half {
   width: 50%;
 }
 
-.signup-right-half > img {
+.signin-right-half > img {
   object-fit: cover;
   height: 100%;
   width: 100%;
@@ -18,30 +18,30 @@
   border-radius: 0 16px 16px 0;
 }
 
-.signup-left-half {
+.signin-left-half {
   display: flex;
   flex-direction: column;
   width: 50%;
 }
 
-.signup-icon-bar {
+.signin-icon-bar {
   display: flex;
   align-items: center;
   margin: 50px auto;
 }
 
-.signup-icon-bar > img {
+.signin-icon-bar > img {
   width: 40px;
   height: 40px;
   margin-right: 20px;
 }
 
-.signup-icon-bar > p {
+.signin-icon-bar > p {
   font-size: 40px;
   font-weight: 300;
 }
 
-.signup-form {
+.signin-form {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -49,7 +49,7 @@
   margin: 0 auto;
 }
 
-.signup-form > input {
+.signin-form > input {
   height: 40px;
   border: none;
   background-color: #f5f5f5;
@@ -68,7 +68,7 @@
   height: 40px;
 }
 
-.signup-button {
+.signin-button {
   width: 80%;
   height: 48px;
   margin: 10px auto;
@@ -80,7 +80,7 @@
   cursor: pointer;
 }
 
-.to-signin-button {
+.to-signup-button {
   width: 80%;
   height: 48px;
   margin: 10px auto;

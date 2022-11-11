@@ -1,6 +1,11 @@
+import { useNavigate } from 'react-router-dom'
 import './SignUpBox.css'
 
 const SignUpBox = () => {
+  const navigate = useNavigate()
+  const toSignIn = () => {
+    navigate('/signin')
+  }
   return (
     <div className="signup-main-container">
       <div className="signup-left-half">
@@ -31,7 +36,9 @@ const SignUpBox = () => {
         </form>
         <button className="signup-button">Sign up</button>
         <span>OR</span>
-        <button className="login-button">Log in</button>
+        <button className="to-signin-button" onClick={toSignIn}>
+          Sign in
+        </button>
       </div>
       <div className="signup-right-half">
         <img
