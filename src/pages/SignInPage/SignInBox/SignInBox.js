@@ -14,9 +14,9 @@ const SignInBox = () => {
           <p>GET A ROOM</p>
         </div>
         <form className="signin-form">
-          <label for="email">email</label>
+          <label htmlFor="email">email</label>
           <input id="email"></input>
-          <label for="password">password</label>
+          <label htmlFor="password">password</label>
           <input id="password"></input>
         </form>
         <button className="signin-button">Sign in</button>

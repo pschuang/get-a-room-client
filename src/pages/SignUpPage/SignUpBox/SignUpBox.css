@@ -66,6 +66,9 @@
 .image-options-list > img {
   width: 40px;
   height: 40px;
+  cursor: pointer;
+  /* border: 3px solid black; */
+  border-radius: 50%;
 }
 
 .signup-button {
