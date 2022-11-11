@@ -26,10 +26,7 @@ const SignInBox = () => {
         </button>
       </div>
       <div className="signin-right-half">
-        <img
-          src="https://images.unsplash.com/photo-1606245081924-c08c2c463d2b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=875&q=80"
-          alt=""
-        />
+        <img src="signin-cover.png" alt="" />
       </div>
     </div>
   )
