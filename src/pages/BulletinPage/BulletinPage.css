@@ -4,7 +4,7 @@ h1 {
 
 .bulletin-page-container {
   display: flex;
-  background-color: #FFF174;
+  background-color: #fff174;
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -31,14 +31,14 @@ h1 {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 16px
+  gap: 16px;
 }
 
 .category {
   font-size: 22px;
   padding-right: 20px;
   border-right: 2px solid black;
-  /* background-color: violet; */
+  cursor: pointer;
 }
 
 .search {
