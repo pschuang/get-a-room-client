@@ -32,7 +32,9 @@
 }
 
 .question-input-container-bottom {
-  /* background-color: green; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .question-input-container-bottom > input {
