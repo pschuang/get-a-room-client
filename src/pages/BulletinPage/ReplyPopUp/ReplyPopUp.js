@@ -1,22 +1,28 @@
 import { useState } from 'react'
 import './ReplyPopUp.css'
+import axios from '../../../api/axios'
 
-const question = {
-  id: 1,
-  user_id: 5,
-  start_time: 1667963510010,
-  content: '你最喜歡哪一家飲料店?',
-  is_closed: 0,
-  category: 'food',
-  nickname: 'Ruth',
-  pictureURL: '/dog.png',
-  reply_counts: 3,
-}
-
-const ReplyPopUp = ({ onClose }) => {
+const ReplyPopUp = ({ onClose, question }) => {
   const [reply, setReply] = useState('')
-  const createReply = () => {
-    //:TODO:
+  const createReply = async () => {
+    try {
+      const response = await axios({
+        method: 'POST',
+        url: '/reply',
+        data: {
+          user_id: 1,
+          question_id: question.id,
+          reply: reply,
+        },
+      })
+      setReply('')
+      if (response.status === 200) {
+        alert('created reply successfully')
+        onClose()
+      }
+    } catch (error) {
+      console.log('ERROR: ', error)
+    }
   }
   return (
     <>

@@ -1,7 +1,15 @@
 import './QuestionUnit.css'
 import { categoryList } from '../BulletinPage'
 
-const QuestionUnit = ({ question }) => {
+const QuestionUnit = ({
+  question,
+  setSelectedQuestion,
+  setIsShowReplyPopUp,
+}) => {
+  const handleReplyClick = () => {
+    setSelectedQuestion(question)
+    setIsShowReplyPopUp(true)
+  }
   return (
     <div className="question-unit">
       <div className="category-bar">
@@ -26,7 +34,7 @@ const QuestionUnit = ({ question }) => {
           <img src="/icon-comment.svg" alt="" />
           <div>{question.reply_counts}</div>
           <div className="button-div">
-            <button>Reply</button>
+            <button onClick={handleReplyClick}>Reply</button>
           </div>
         </div>
       </div>

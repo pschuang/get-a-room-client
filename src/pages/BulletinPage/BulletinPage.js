@@ -18,12 +18,13 @@ export const categoryList = [
 ]
 
 const BulletinPage = ({ userId }) => {
-  const [keyword, setKeyord] = useState()
+  const [keyword, setKeyord] = useState('')
   const [questions, setQuestions] = useState([])
   const [paging, setPaging] = useState(0)
   const [isNextPage, SetIsNextPage] = useState(false)
 
-  const [isShowReplyPopUp, setIsShowReplyPopUp] = useState(true)
+  const [isShowReplyPopUp, setIsShowReplyPopUp] = useState(false)
+  const [selectedQuestion, setSelectedQuestion] = useState({})
 
   let [searchParams, setSearchParams] = useSearchParams()
   let location = useLocation()
@@ -56,7 +57,7 @@ const BulletinPage = ({ userId }) => {
       method: 'GET',
       url: `/questions/${category}`,
       params: {
-        paging: loadmorePage || paging,
+        paging: loadmorePage || 0,
         keyword: keyword,
       },
     })
@@ -69,6 +70,7 @@ const BulletinPage = ({ userId }) => {
     } else {
       setQuestions(questionData)
     }
+
     if (next_paging) {
       SetIsNextPage(true)
     } else {
@@ -126,6 +128,8 @@ const BulletinPage = ({ userId }) => {
                 return (
                   <QuestionUnit
                     question={question}
+                    setSelectedQuestion={setSelectedQuestion}
+                    setIsShowReplyPopUp={setIsShowReplyPopUp}
                     key={`question-${question.id}`}
                   />
                 )
@@ -145,7 +149,10 @@ const BulletinPage = ({ userId }) => {
         </div>
       </div>
       {isShowReplyPopUp && (
-        <ReplyPopUp onClose={() => setIsShowReplyPopUp(false)} />
+        <ReplyPopUp
+          question={selectedQuestion}
+          onClose={() => setIsShowReplyPopUp(false)}
+        />
       )}
     </>
   )
