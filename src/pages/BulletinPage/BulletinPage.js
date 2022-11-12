@@ -19,12 +19,17 @@ const categoryList = [
 const BulletinPage = ({ userId }) => {
   const [keyword, setKeyord] = useState()
   const [questions, setQuestions] = useState([])
+  const [paging, setPaging] = useState(0)
+  const [isNextPage, SetIsNextPage] = useState(false)
+
   let [searchParams, setSearchParams] = useSearchParams()
   let location = useLocation()
 
   const handleCategoryClick = (category) => {
     searchParams.set('category', category)
+    console.log('searchParams before: ', searchParams.get('category'))
     setSearchParams(searchParams)
+    console.log('searchParams after: ', searchParams.get('category'))
   }
 
   const handleSearchClick = () => {
@@ -37,26 +42,50 @@ const BulletinPage = ({ userId }) => {
     setSearchParams()
   }
 
-  const getQuestions = async () => {
-    const category = searchParams.get('category')
+  const getQuestions = async (loadmorePage) => {
+    console.log('getQuestions is called')
+    const category = searchParams.get('category') || 'all'
+    console.log('category: ', category)
     const keyword = searchParams.get('keyword')
+    console.log('keyword: ', keyword)
+
     const response = await axios({
       method: 'GET',
       url: `/questions/${category}`,
       params: {
+        paging: loadmorePage || paging,
         keyword: keyword,
       },
     })
-    setQuestions(response.data.questions)
+
+    console.log('RESPONSE: ', response)
+    const { questions: questionData, next_paging } = response.data
+
+    if (loadmorePage) {
+      setQuestions([...questions, ...questionData])
+    } else {
+      setQuestions(questionData)
+    }
+    if (next_paging) {
+      SetIsNextPage(true)
+    } else {
+      SetIsNextPage(false)
+    }
   }
+
   useEffect(() => {
-    console.log(location)
+    console.log('location', location)
     getQuestions()
+    setPaging(0)
   }, [location])
 
+  // useEffect(() => {
+  //   console.log('location', location)
+  //   getQuestions()
+  // }, [paging])
 
   return (
-    <>
+    <div className="main-page-container">
       <h1>This is a BulletinPage</h1>
       <div className="bulletin-page-container">
         <div className="temporary-friend-list"></div>
@@ -98,9 +127,18 @@ const BulletinPage = ({ userId }) => {
               )
             })}
           </div>
+          <button
+            style={{ display: isNextPage ? 'block' : 'none' }}
+            onClick={() => {
+              getQuestions(paging + 1)
+              setPaging(paging + 1)
+            }}
+          >
+            Load More
+          </button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
