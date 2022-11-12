@@ -4,6 +4,7 @@ import QuestionUnit from './QuestionUnit/QuestionUnit'
 import { useState, useEffect } from 'react'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import axios from '../../api/axios'
+import ReplyPopUp from './ReplyPopUp/ReplyPopUp'
 
 export const categoryList = [
   { color: '#333333', name: 'all' },
@@ -21,6 +22,8 @@ const BulletinPage = ({ userId }) => {
   const [questions, setQuestions] = useState([])
   const [paging, setPaging] = useState(0)
   const [isNextPage, SetIsNextPage] = useState(false)
+
+  const [isShowReplyPopUp, setIsShowReplyPopUp] = useState(true)
 
   let [searchParams, setSearchParams] = useSearchParams()
   let location = useLocation()
@@ -80,66 +83,71 @@ const BulletinPage = ({ userId }) => {
   }, [location])
 
   return (
-    <div className="main-page-container">
-      <h1>This is a BulletinPage</h1>
-      <div className="bulletin-page-container">
-        <div className="temporary-friend-list"></div>
-        <div className="bulletin-main-container">
-          <QuestionInput />
-          <div className="category-search-container">
-            <div>
-              <div className="category-list">
-                {categoryList.map((category, index) => (
-                  <div
-                    key={index}
-                    className="category"
-                    onClick={() => handleCategoryClick(category.name)}
-                  >
-                    <span style={{ color: category.color }}>#</span>
-                    {category.name}
-                  </div>
-                ))}
+    <>
+      <div className="main-page-container">
+        <h1>This is a BulletinPage</h1>
+        <div className="bulletin-page-container">
+          <div className="temporary-friend-list"></div>
+          <div className="bulletin-main-container">
+            <QuestionInput />
+            <div className="category-search-container">
+              <div>
+                <div className="category-list">
+                  {categoryList.map((category, index) => (
+                    <div
+                      key={index}
+                      className="category"
+                      onClick={() => handleCategoryClick(category.name)}
+                    >
+                      <span style={{ color: category.color }}>#</span>
+                      {category.name}
+                    </div>
+                  ))}
+                </div>
+                <button className="clear-button" onClick={handleClearFilter}>
+                  Clear
+                </button>
               </div>
-              <button className="clear-button" onClick={handleClearFilter}>
-                Clear
-              </button>
-            </div>
-            <div className="search">
-              <input
-                placeholder="search"
-                value={keyword}
-                onChange={(e) => {
-                  setKeyord(e.target.value)
-                }}
-              />
-              <button className="search-button" onClick={handleSearchClick}>
-                <img src="/icon-search.svg" alt="" />
-              </button>
-            </div>
-          </div>
-          <div className="temporary-question-list">
-            {questions.map((question) => {
-              return (
-                <QuestionUnit
-                  question={question}
-                  key={`question-${question.id}`}
+              <div className="search">
+                <input
+                  placeholder="search"
+                  value={keyword}
+                  onChange={(e) => {
+                    setKeyord(e.target.value)
+                  }}
                 />
-              )
-            })}
+                <button className="search-button" onClick={handleSearchClick}>
+                  <img src="/icon-search.svg" alt="" />
+                </button>
+              </div>
+            </div>
+            <div className="temporary-question-list">
+              {questions.map((question) => {
+                return (
+                  <QuestionUnit
+                    question={question}
+                    key={`question-${question.id}`}
+                  />
+                )
+              })}
+            </div>
+            <button
+              className="load-more-button"
+              style={{ display: isNextPage ? 'block' : 'none' }}
+              onClick={() => {
+                getQuestions(paging + 1)
+                setPaging(paging + 1)
+              }}
+            >
+              Load More
+            </button>
           </div>
-          <button
-            className="load-more-button"
-            style={{ display: isNextPage ? 'block' : 'none' }}
-            onClick={() => {
-              getQuestions(paging + 1)
-              setPaging(paging + 1)
-            }}
-          >
-            Load More
-          </button>
         </div>
       </div>
-    </div>
+      {isShowReplyPopUp && (
+        <ReplyPopUp onClose={() => setIsShowReplyPopUp(false)} />
+      )}
+    </>
   )
 }
 
