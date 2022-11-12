@@ -27,6 +27,7 @@
 
 .question-box-name {
   display: flex;
+  font-weight: 700;
 }
 
 .question-box-name > img {
@@ -48,9 +49,8 @@
 }
 
 .question-box-bottom > img {
-  height: 24px;
-  width: 24px;
-  object-fit: cover;
+  height: 16px;
+  width: 16px;
   margin: 10px;
 }
 

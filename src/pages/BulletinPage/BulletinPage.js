@@ -5,12 +5,12 @@ import { useState, useEffect } from 'react'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import axios from '../../api/axios'
 
-const categoryList = [
+export const categoryList = [
   { color: '#333333', name: 'all' },
   { color: '#FFBDD9', name: 'sport' },
   { color: '#E5C0FF', name: 'food' },
   { color: '#92F8FF', name: 'philosophy' },
-  { color: 'red', name: 'politics' },
+  { color: 'orange', name: 'politics' },
   { color: 'coral', name: 'health' },
   { color: '#92FF88', name: 'movie' },
   { color: 'blue', name: 'leisure' },
@@ -79,11 +79,6 @@ const BulletinPage = ({ userId }) => {
     setPaging(0)
   }, [location])
 
-  // useEffect(() => {
-  //   console.log('location', location)
-  //   getQuestions()
-  // }, [paging])
-
   return (
     <div className="main-page-container">
       <h1>This is a BulletinPage</h1>
@@ -92,30 +87,35 @@ const BulletinPage = ({ userId }) => {
         <div className="bulletin-main-container">
           <QuestionInput />
           <div className="category-search-container">
-            <div className="category-list">
-              {categoryList.map((category, index) => (
-                <div
-                  key={index}
-                  className="category"
-                  onClick={() => handleCategoryClick(category.name)}
-                >
-                  <span style={{ color: category.color }}>#</span>
-                  {category.name}
-                </div>
-              ))}
+            <div>
+              <div className="category-list">
+                {categoryList.map((category, index) => (
+                  <div
+                    key={index}
+                    className="category"
+                    onClick={() => handleCategoryClick(category.name)}
+                  >
+                    <span style={{ color: category.color }}>#</span>
+                    {category.name}
+                  </div>
+                ))}
+              </div>
+              <button className="clear-button" onClick={handleClearFilter}>
+                Clear
+              </button>
             </div>
-            <button onClick={handleClearFilter}>Clear</button>
-            <input
-              className="search"
-              placeholder="search"
-              value={keyword}
-              onChange={(e) => {
-                setKeyord(e.target.value)
-              }}
-            />
-            <button className="search-button" onClick={handleSearchClick}>
-              SEARCH
-            </button>
+            <div className="search">
+              <input
+                placeholder="search"
+                value={keyword}
+                onChange={(e) => {
+                  setKeyord(e.target.value)
+                }}
+              />
+              <button className="search-button" onClick={handleSearchClick}>
+                <img src="/icon-search.svg" alt="" />
+              </button>
+            </div>
           </div>
           <div className="temporary-question-list">
             {questions.map((question) => {
@@ -128,6 +128,7 @@ const BulletinPage = ({ userId }) => {
             })}
           </div>
           <button
+            className="load-more-button"
             style={{ display: isNextPage ? 'block' : 'none' }}
             onClick={() => {
               getQuestions(paging + 1)
