@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import axios from '../../api/axios'
 import ReplyPopUp from './ReplyPopUp/ReplyPopUp'
+import FriendList from '../../components/FriendList/FriendList'
 
 export const categoryList = [
   { color: '#333333', name: 'all' },
@@ -87,9 +88,8 @@ const BulletinPage = ({ userId }) => {
   return (
     <>
       <div className="main-page-container">
-        <h1>This is a BulletinPage</h1>
         <div className="bulletin-page-container">
-          <div className="temporary-friend-list"></div>
+          <FriendList />
           <div className="bulletin-main-container">
             <QuestionInput />
             <div className="category-search-container">

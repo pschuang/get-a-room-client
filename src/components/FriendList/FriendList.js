@@ -24,6 +24,7 @@ const FriendList = ({ userId }) => {
 
   return (
     <div className="friend-list">
+      <h2>Roomies</h2>
       {friends.map((friend) => (
         <div
           key={friend.userId}
@@ -32,10 +33,9 @@ const FriendList = ({ userId }) => {
           }}
           className="friend"
         >
-          <img src={friend.pictureURL} alt="" />{' '}
+          <img src={friend.pictureURL} alt="" />
           <p>
-            {' '}
-            {friend.nickname} user id: {friend.userId}
+            <b>{friend.nickname}</b> user id: {friend.userId}
           </p>
         </div>
       ))}

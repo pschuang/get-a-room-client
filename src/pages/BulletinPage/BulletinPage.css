@@ -13,20 +13,13 @@ h1 {
   margin: 0 auto;
 }
 
-.temporary-friend-list {
-  height: 200px;
-  width: 25%;
-}
-
 .bulletin-main-container {
   flex: 1;
-  /* background-color: lightgreen; */
 }
 
 .category-search-container {
   display: flex;
   align-items: flex-start;
-  /* background-color: orange; */
   height: 150px;
   padding: 20px;
 }
@@ -82,11 +75,9 @@ h1 {
 }
 
 .temporary-question-list {
-  /* background-color: violet; */
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-  /* height: 500px; */
   margin: 10px;
   padding: 10px;
 }
