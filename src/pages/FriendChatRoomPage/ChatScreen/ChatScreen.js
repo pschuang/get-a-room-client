@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from '../../../api/axios'
 
-const ChatScreen = ({ socket, userId, roomId }) => {
+const ChatScreen = ({ socket, roomId }) => {
   const [message, setMessage] = useState('')
   const [messageQueue, setMessageQueue] = useState([])
+  const navigate = useNavigate()
+  const userId = window.localStorage.getItem('user_id')
 
   useEffect(() => {
     getMessages()
@@ -42,6 +45,11 @@ const ChatScreen = ({ socket, userId, roomId }) => {
   socket.on('receive-message-from-friend', (data) => {
     console.log(data)
     setMessageQueue([...messageQueue, data])
+  })
+
+  socket.on('join-room-fail', ({ message }) => {
+    alert(message)
+    navigate('/')
   })
 
   socket.on('connect_error', (err) => {

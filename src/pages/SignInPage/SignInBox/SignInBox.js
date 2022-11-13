@@ -23,9 +23,10 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
         },
       })
       console.log(response.data)
-      // TODO: server user data remove
+
       const { access_token, user } = response.data
       window.localStorage.setItem('access_token', access_token)
+      window.localStorage.setItem('user_id', user.id)
       // 當使用者登入時，會更改狀態並觸發 checkUserData，使 client 端重新建立連線
       setIslocalStorageChanged((prev) => prev + 1)
       //
