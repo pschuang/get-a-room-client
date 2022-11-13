@@ -18,7 +18,7 @@ export const categoryList = [
   { color: 'blue', name: 'leisure' },
 ]
 
-const BulletinPage = ({ userId }) => {
+const BulletinPage = () => {
   const [keyword, setKeyord] = useState('')
   const [questions, setQuestions] = useState([])
   const [paging, setPaging] = useState(0)

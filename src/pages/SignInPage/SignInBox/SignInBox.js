@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './SignInBox.css'
 import axios from '../../../api/axios'
 
-const SignInBox = () => {
+const SignInBox = ({ setIslocalStorageChanged }) => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,18 +22,35 @@ const SignInBox = () => {
           password: password,
         },
       })
-      const { access_token } = response.data
+      console.log(response.data)
+      // TODO: server user data remove
+      const { access_token, user } = response.data
       window.localStorage.setItem('access_token', access_token)
+      // 當使用者登入時，會更改狀態並觸發 checkUserData，使 client 端重新建立連線
+      setIslocalStorageChanged((prev) => prev + 1)
+      //
+      // const newSocket = io('http://localhost:8000', {
+      //   autoConnect: false,
+      //   auth: { token: access_token },
+      // })
+      // setSocket(newSocket)
+      // newSocket.connect()
+
+      //
+      // socket.auth.token = access_token
+      // socket.connect()
+      //
+      // socket.emit('user-id', user.id)
 
       setEmail('')
       setPassword('')
       alert('you sign in successfully')
       navigate('/')
     } catch (error) {
-      console.log('Woops! Error!')
-      if (error.response.status === 400 || error.response.status === 403) {
-        alert(error.response.data.error)
-      }
+      console.log('Woops! Error!', error)
+      // if (error.response.status === 400 || error.response.status === 403) {
+      //   alert(error.response.data.error)
+      // }
     }
   }
 

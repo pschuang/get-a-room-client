@@ -44,6 +44,10 @@ const ChatScreen = ({ socket, userId, roomId }) => {
     setMessageQueue([...messageQueue, data])
   })
 
+  socket.on('connect_error', (err) => {
+    console.log(err.message) // prints the message associated with the error
+  })
+
   return (
     <>
       <div className="message-container">

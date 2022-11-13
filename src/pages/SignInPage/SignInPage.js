@@ -2,12 +2,12 @@ import Header from '../../components/Header/Header'
 import SignInBox from './SignInBox/SignInBox'
 import './SignInPage.css'
 
-const SignInPage = () => {
+const SignInPage = ({ setIslocalStorageChanged }) => {
   return (
     <>
       <Header />
       <div className="signup-page-container">
-        <SignInBox />
+        <SignInBox setIslocalStorageChanged={setIslocalStorageChanged} />
       </div>
     </>
   )

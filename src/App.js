@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import BulletinPage from './pages/BulletinPage/BulletinPage'
 import ChatRoomPage from './pages/ChatRoomPage/ChatRoomPage'
@@ -7,43 +7,61 @@ import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage'
 import SignUpPage from './pages/SignUpPage/SignUpPage'
 import SignInPage from './pages/SignInPage/SignInPage'
 import { io } from 'socket.io-client'
-import LoginInput from './components/LoginInput/LoginInput'
-
-// test
 
 const App = () => {
+  // 一進到頁面就建立 socket 物件
   const [socket, setSocket] = useState(
-    io('http://localhost:8000', { autoConnect: false })
+    io('http://localhost:8000', {
+      autoConnect: false,
+      auth: { token: window.localStorage.getItem('access_token') },
+    })
   )
-  const [userId, setUserId] = useState('')
+
+  const [islocalStorageChanged, setIslocalStorageChanged] = useState(0)
+
+  const checkUserData = () => {
+    const item = window.localStorage.getItem('access_token')
+    if (item) {
+      console.log('before auth token', socket.auth.token)
+      socket.auth.token = item
+      console.log(socket.auth.token, 'hihihihihi connect')
+
+      // TODO: SERVER JWT get user id (user-id emit)
+      socket.connect()
+    }
+  }
+  // 一進到頁面 or 當 localstorage 有改變時就帶不同 token 去重新建立連線
+  useEffect(() => {
+    checkUserData()
+  }, [islocalStorageChanged])
 
   return (
     <>
-      <LoginInput setUserId={setUserId} socket={socket} />
       <Routes>
-        <Route exact path="/" element={<BulletinPage userId={userId} />} />
-        {/* <Route
-        exact
-        path="/login"
-        element={<BulletinPage setSocket={setSocket} />}
-      /> */}
+        <Route exact path="/" element={<BulletinPage />} />
         <Route
           exact
           path="/friendChat/:roomId"
-          element={<FriendChatRoomPage socket={socket} userId={userId} />}
+          element={<FriendChatRoomPage socket={socket} />}
         />
         <Route
           exact
           path="/matchChat/:roomId"
-          element={<ChatRoomPage socket={socket} userId={userId} />}
+          element={<ChatRoomPage socket={socket} />}
         />
         <Route
           exact
           path="/question/:id"
-          element={<QuestionDetailPage socket={socket} userId={userId} />}
+          element={<QuestionDetailPage socket={socket} />}
         />
         <Route exact path="/signup" element={<SignUpPage />} />
-        <Route exact path="/signin" element={<SignInPage />} />
+        <Route
+          exact
+          path="/signin"
+          element={
+            <SignInPage setIslocalStorageChanged={setIslocalStorageChanged} />
+          }
+        />
       </Routes>
     </>
   )

@@ -10,7 +10,6 @@ const ReplyPopUp = ({ onClose, question }) => {
         method: 'POST',
         url: '/reply',
         data: {
-          user_id: 1,
           question_id: question.id,
           reply: reply,
         },
