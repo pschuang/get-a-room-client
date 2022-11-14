@@ -53,6 +53,15 @@ const Header = ({ socket }) => {
     console.log(message)
   })
 
+  const handleLogout = () => {
+    socket.emit('logout')
+    window.localStorage.removeItem('user_id')
+    window.localStorage.removeItem('access_token')
+    setIsSignIn(false)
+    alert("You've logged out")
+    navigate('/signin')
+  }
+
   return (
     <div className="header">
       <div
@@ -75,19 +84,7 @@ const Header = ({ socket }) => {
       <h3>This is header</h3>
       <img src={picture} alt="" />
       <div>{nickname}</div>
-      {isSignedIn && (
-        <button
-          onClick={() => {
-            window.localStorage.removeItem('user_id')
-            window.localStorage.removeItem('access_token')
-            setIsSignIn(false)
-            alert("You've logged out")
-            navigate('/signin')
-          }}
-        >
-          Log Out
-        </button>
-      )}
+      {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
     </div>
   )
 }
