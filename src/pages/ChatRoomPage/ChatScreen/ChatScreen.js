@@ -1,23 +1,11 @@
-import { useEffect, useState } from 'react'
-import axios from '../../../api/axios'
+import { useState } from 'react'
 
-const ChatScreen = ({ socket, userId, roomId }) => {
+const ChatScreen = ({ socket, roomId }) => {
   const [message, setMessage] = useState('')
   const [messageQueue, setMessageQueue] = useState([])
+  const userId = window.localStorage.getItem('user_id')
 
-  useEffect(() => {
-    getMessages()
-  }, [])
-
-  const getMessages = async () => {
-    const response = await axios.get(`/chatroom/messages/${roomId}`)
-    console.log(response.data.messages)
-    setMessageQueue(response.data.messages)
-  }
-
-  //TODO: 重整時，拿 roomId 和 userId 去 query friend 表，如果有資料就再把兩人加進 room 一次
   const sendMessage = () => {
-    // console.log('send msg')
     // 把訊息送給正在聊天的人所在的 room
     socket.emit('send-message', {
       roomId,

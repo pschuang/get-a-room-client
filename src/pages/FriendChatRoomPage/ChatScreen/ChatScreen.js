@@ -10,7 +10,7 @@ const ChatScreen = ({ socket, roomId }) => {
 
   useEffect(() => {
     getMessages()
-  }, [])
+  }, [roomId])
 
   const getMessages = async () => {
     const response = await axios.get(`/chatroom/messages/${roomId}`)
@@ -22,8 +22,6 @@ const ChatScreen = ({ socket, roomId }) => {
     console.log(roomId)
     socket.emit('join-room', { roomId })
   }, [roomId])
-
-  //TODO: 重整時，拿 roomId 和 userId 去 query friend 表，如果有資料就再把兩人加進 room 一次
 
   const sendMessageToFriend = () => {
     console.log('send msg - friend')

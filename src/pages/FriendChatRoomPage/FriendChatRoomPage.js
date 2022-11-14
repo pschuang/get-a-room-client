@@ -12,7 +12,7 @@ const FriendChatRoomPage = ({ socket }) => {
       <div className="page-container">
         <FriendList />
         <div className="main-content-container">
-          <ChatScreen socket={socket} userId={1} roomId={roomId} />
+          <ChatScreen socket={socket} roomId={roomId} />
         </div>
       </div>
     </>
