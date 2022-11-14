@@ -16,7 +16,7 @@ export const categoryList = [
   { color: 'orange', name: 'politics' },
   { color: 'coral', name: 'health' },
   { color: '#92FF88', name: 'movie' },
-  { color: 'blue', name: 'leisure' },
+  { color: 'lightblue', name: 'leisure' },
 ]
 
 const BulletinPage = ({ socket }) => {
