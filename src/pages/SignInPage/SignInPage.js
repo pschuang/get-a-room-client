@@ -5,7 +5,7 @@ import './SignInPage.css'
 const SignInPage = ({ setIslocalStorageChanged }) => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="signup-page-container">
         <SignInBox setIslocalStorageChanged={setIslocalStorageChanged} />
       </div>
