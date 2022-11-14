@@ -1,17 +1,21 @@
 .header {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 70px;
   background-color: #333333;
   text-align: center;
   color: white;
-  padding: 10px;
+  padding: 20px 50px;
+  gap: 20px;
 }
 
 .header > h3 {
   flex: 1;
 }
 
-.header > button {
-  margin-right: 50px;
+.header > img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
 }
