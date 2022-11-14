@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../api/axios'
 
-const FriendList = ({ userId }) => {
+const FriendList = () => {
   const [friends, setFriends] = useState([])
   const navigate = useNavigate()
   useEffect(() => {
-    getFriends(userId)
-  }, [userId])
+    getFriends()
+  }, [])
 
-  const getFriends = async (userId) => {
+  const getFriends = async () => {
     const response = await axios.get(`/friends`)
     console.log(response.data)
     setFriends(response.data.friends)
