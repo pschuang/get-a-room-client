@@ -19,11 +19,33 @@ const QuestionInput = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
   const [isCreated, setIsCreated] = useState(false)
   const [questionInfo, setQuestionInfo] = useState({})
+  const [nickname, setNickname] = useState('')
+  const [picture, setPicture] = useState('')
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    getUserInfo()
+  }, [])
+
   useEffect(() => {
     getCreatedQuestionStatus()
   }, [])
+
+  const getUserInfo = async () => {
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: '/user/info',
+      })
+      console.log('USER INFO: ', response.data)
+      const { nickname, picture_URL } = response.data
+      setNickname(nickname)
+      setPicture(picture_URL)
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
 
   const handleOpen = () => {
     setIsOpen(!isOpen)
@@ -40,7 +62,6 @@ const QuestionInput = () => {
         method: 'POST',
         url: '/questions',
         data: {
-          user_id: 1,
           category_id: selectedCategoryId,
           content: questionContent,
         },
@@ -92,10 +113,8 @@ const QuestionInput = () => {
       ) : (
         <>
           <div className="question-input-container-top">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3940/3940437.png"
-              alt=""
-            />
+            <img src={picture} alt="" />
+            <div>{nickname}</div>
             <div className="dropdown">
               <div className="dropdown-header" onClick={handleOpen}>
                 {selectedCategoryId

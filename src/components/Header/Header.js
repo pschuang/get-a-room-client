@@ -55,6 +55,14 @@ const Header = ({ socket }) => {
 
   return (
     <div className="header">
+      <div
+        className="logo"
+        onClick={() => {
+          navigate('/')
+        }}
+      >
+        This is logo
+      </div>
       {isShowPopUp && (
         <button
           onClick={() => {

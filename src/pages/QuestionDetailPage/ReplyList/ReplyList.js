@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import './ReplyList.css'
 
 const ReplyList = ({ repliers, socket }) => {
-
   const navigate = useNavigate()
 
   const createChat = (replier) => {
