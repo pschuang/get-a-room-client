@@ -1,6 +1,17 @@
 .header {
+  display: flex;
+  align-items: center;
   height: 50px;
   background-color: #333333;
   text-align: center;
   color: white;
+  padding: 10px;
+}
+
+.header > h3 {
+  flex: 1;
+}
+
+.header > button {
+  margin-right: 50px;
 }

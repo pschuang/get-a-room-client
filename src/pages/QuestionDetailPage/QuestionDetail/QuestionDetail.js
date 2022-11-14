@@ -29,11 +29,7 @@ const QuestionDetail = ({ questionId, socket }) => {
     <div className="question-detail">
       <h1>Your Question: {questionId}</h1>
       <div className="question">{content}</div>
-      <ReplyList
-        repliers={repliers}
-        socket={socket}
-        setRepliers={setRepliers}
-      />
+      <ReplyList repliers={repliers} socket={socket} />
     </div>
   )
 }

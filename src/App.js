@@ -38,7 +38,7 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<BulletinPage />} />
+        <Route exact path="/" element={<BulletinPage socket={socket}/>} />
         <Route
           exact
           path="/friendChat/:roomId"

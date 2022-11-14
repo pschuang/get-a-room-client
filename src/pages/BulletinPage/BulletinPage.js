@@ -6,6 +6,7 @@ import { useSearchParams, useLocation } from 'react-router-dom'
 import axios from '../../api/axios'
 import ReplyPopUp from './ReplyPopUp/ReplyPopUp'
 import FriendList from '../../components/FriendList/FriendList'
+import Header from '../../components/Header/Header'
 
 export const categoryList = [
   { color: '#333333', name: 'all' },
@@ -18,7 +19,7 @@ export const categoryList = [
   { color: 'blue', name: 'leisure' },
 ]
 
-const BulletinPage = () => {
+const BulletinPage = ({ socket }) => {
   const [keyword, setKeyord] = useState('')
   const [questions, setQuestions] = useState([])
   const [paging, setPaging] = useState(0)
@@ -88,6 +89,8 @@ const BulletinPage = () => {
   return (
     <>
       <div className="main-page-container">
+        <Header socket={socket} />
+
         <div className="bulletin-page-container">
           <FriendList />
           <div className="bulletin-main-container">
