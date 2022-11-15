@@ -54,7 +54,8 @@ const Header = ({ socket }) => {
   })
 
   const handleLogout = () => {
-    socket.emit('logout')
+    // socket.emit('logout')
+    socket.disconnect()
     window.localStorage.removeItem('user_id')
     window.localStorage.removeItem('access_token')
     setIsSignIn(false)

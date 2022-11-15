@@ -36,34 +36,32 @@ const App = () => {
   }, [islocalStorageChanged])
 
   return (
-    <>
-      <Routes>
-        <Route exact path="/" element={<BulletinPage socket={socket}/>} />
-        <Route
-          exact
-          path="/friendChat/:roomId"
-          element={<FriendChatRoomPage socket={socket} />}
-        />
-        <Route
-          exact
-          path="/matchChat/:roomId"
-          element={<ChatRoomPage socket={socket} />}
-        />
-        <Route
-          exact
-          path="/question/:id"
-          element={<QuestionDetailPage socket={socket} />}
-        />
-        <Route exact path="/signup" element={<SignUpPage />} />
-        <Route
-          exact
-          path="/signin"
-          element={
-            <SignInPage setIslocalStorageChanged={setIslocalStorageChanged} />
-          }
-        />
-      </Routes>
-    </>
+    <Routes>
+      <Route exact path="/" element={<BulletinPage socket={socket} />} />
+      <Route
+        exact
+        path="/friendChat/:roomId"
+        element={<FriendChatRoomPage socket={socket} />}
+      />
+      <Route
+        exact
+        path="/matchChat/:roomId"
+        element={<ChatRoomPage socket={socket} />}
+      />
+      <Route
+        exact
+        path="/question/:id"
+        element={<QuestionDetailPage socket={socket} />}
+      />
+      <Route exact path="/signup" element={<SignUpPage />} />
+      <Route
+        exact
+        path="/signin"
+        element={
+          <SignInPage setIslocalStorageChanged={setIslocalStorageChanged} />
+        }
+      />
+    </Routes>
   )
 }
 
