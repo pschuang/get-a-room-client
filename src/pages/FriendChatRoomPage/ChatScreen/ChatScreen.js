@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../../api/axios'
+import dayjs from 'dayjs'
+var utc = require('dayjs/plugin/utc')
+var isBetween = require('dayjs/plugin/isBetween')
+var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(isBetween)
 
 const ChatScreen = ({ socket, roomId }) => {
   const [message, setMessage] = useState('')
@@ -15,6 +22,12 @@ const ChatScreen = ({ socket, roomId }) => {
   const getMessages = async () => {
     const response = await axios.get(`/chatroom/messages/${roomId}`)
     console.log(response.data.messages)
+    console.log(
+      dayjs(response.data.messages[1].created_at)
+        .utc(true)
+        .local()
+        .format('YYYY-MM-DD HH:mm')
+    )
     setMessageQueue(response.data.messages)
   }
 
@@ -64,6 +77,12 @@ const ChatScreen = ({ socket, roomId }) => {
               message.userId == userId ? 'my-message' : 'counterpart-message'
             }
           >
+            <div>
+              {dayjs(message.created_at)
+                .utc(true)
+                .local()
+                .format('YYYY-MM-DD HH:mm')}
+            </div>
             <div>{message.message}</div>
           </div>
         ))}
