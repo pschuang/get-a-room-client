@@ -18,6 +18,7 @@ const ReplyPopUp = ({ onClose, question }) => {
       if (response.status === 200) {
         alert('created reply successfully')
         onClose()
+        window.location.reload();
       }
     } catch (error) {
       console.log('ERROR: ', error)

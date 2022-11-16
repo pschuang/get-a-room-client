@@ -70,6 +70,7 @@ const QuestionInput = () => {
       setQuestionContent('')
       if (response.status === 200) {
         alert('created question successfully')
+        window.location.reload()
       }
     } catch (error) {
       console.log('ERROR: ', error)

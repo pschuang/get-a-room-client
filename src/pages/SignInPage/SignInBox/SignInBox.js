@@ -58,10 +58,7 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
   return (
     <div className="signin-main-container">
       <div className="signin-left-half">
-        <div className="signin-icon-bar">
-          <img src="deer.png" alt="logo" />
-          <p>GET A ROOM</p>
-        </div>
+        <img src="/get-a-room.svg" alt="logo" />
         <form className="signin-form">
           <label htmlFor="email">email</label>
           <input

@@ -48,10 +48,7 @@ const SignUpBox = () => {
   return (
     <div className="signup-main-container">
       <div className="signup-left-half">
-        <div className="signup-icon-bar">
-          <img src="ostrich.png" alt="logo" />
-          <p>GET A ROOM</p>
-        </div>
+        <img src="/get-a-room.svg" alt="logo" />
         <form className="signup-form">
           <label htmlFor="name">Name</label>
           <input
