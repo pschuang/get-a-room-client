@@ -7,6 +7,7 @@ import axios from '../../api/axios'
 import ReplyPopUp from './ReplyPopUp/ReplyPopUp'
 import FriendList from '../../components/FriendList/FriendList'
 import Header from '../../components/Header/Header'
+import dayjs from 'dayjs'
 
 export const categoryList = [
   { color: '#333333', name: 'all' },
@@ -27,6 +28,9 @@ const BulletinPage = ({ socket }) => {
 
   const [isShowReplyPopUp, setIsShowReplyPopUp] = useState(false)
   const [selectedQuestion, setSelectedQuestion] = useState({})
+  const [isBulletinClosed, setIsBulletinClosed] = useState(false)
+  const [closedTime, setClosedTime] = useState('')
+  const [nextOpenTime, setNextOpenTime] = useState('')
 
   let [searchParams, setSearchParams] = useSearchParams()
   let location = useLocation()
@@ -54,29 +58,47 @@ const BulletinPage = ({ socket }) => {
     console.log('category: ', category)
     const keyword = searchParams.get('keyword')
     console.log('keyword: ', keyword)
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: `/questions/${category}`,
+        params: {
+          paging: loadmorePage || 0,
+          keyword: keyword,
+        },
+      })
 
-    const response = await axios({
-      method: 'GET',
-      url: `/questions/${category}`,
-      params: {
-        paging: loadmorePage || 0,
-        keyword: keyword,
-      },
-    })
+      console.log('RESPONSE: ', response)
+      const { questions: questionData, next_paging } = response.data
 
-    console.log('RESPONSE: ', response)
-    const { questions: questionData, next_paging } = response.data
+      if (loadmorePage) {
+        setQuestions([...questions, ...questionData])
+      } else {
+        setQuestions(questionData)
+      }
 
-    if (loadmorePage) {
-      setQuestions([...questions, ...questionData])
-    } else {
-      setQuestions(questionData)
-    }
-
-    if (next_paging) {
-      SetIsNextPage(true)
-    } else {
-      SetIsNextPage(false)
+      if (next_paging) {
+        SetIsNextPage(true)
+      } else {
+        SetIsNextPage(false)
+      }
+    } catch (err) {
+      if (err.response.status === 423) {
+        console.log('ERRORRRRRR:', err.response.data)
+        setIsBulletinClosed(true)
+        setClosedTime(
+          dayjs(err.response.data.closedAt)
+            .utc(true)
+            .local()
+            .format('YYYY-MM-DD HH:mm')
+        )
+        setNextOpenTime(
+          dayjs(err.response.data.nextOpenAt)
+            .utc(true)
+            .local()
+            .format('YYYY-MM-DD HH:mm')
+        )
+      }
     }
   }
 
@@ -90,64 +112,80 @@ const BulletinPage = ({ socket }) => {
     <>
       <div className="main-page-container">
         <Header socket={socket} />
-
         <div className="bulletin-page-container">
           <FriendList />
           <div className="bulletin-main-container">
-            <QuestionInput />
-            <div className="category-search-container">
-              <div>
-                <div className="category-list">
-                  {categoryList.map((category, index) => (
-                    <div
-                      key={index}
-                      className="category"
-                      onClick={() => handleCategoryClick(category.name)}
-                    >
-                      <span style={{ color: category.color }}>#</span>
-                      {category.name}
+            {isBulletinClosed ? (
+              <>
+                <h1>已打烊</h1>
+                <br />
+                <h2>今日終了時間: {closedTime}</h2>
+                <h2>明日開放時間: {nextOpenTime}</h2>
+              </>
+            ) : (
+              <>
+                <QuestionInput />
+                <div className="category-search-container">
+                  <div>
+                    <div className="category-list">
+                      {categoryList.map((category, index) => (
+                        <div
+                          key={index}
+                          className="category"
+                          onClick={() => handleCategoryClick(category.name)}
+                        >
+                          <span style={{ color: category.color }}>#</span>
+                          {category.name}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                    <button
+                      className="clear-button"
+                      onClick={handleClearFilter}
+                    >
+                      Clear
+                    </button>
+                  </div>
+                  <div className="search">
+                    <input
+                      placeholder="search"
+                      value={keyword}
+                      onChange={(e) => {
+                        setKeyord(e.target.value)
+                      }}
+                    />
+                    <button
+                      className="search-button"
+                      onClick={handleSearchClick}
+                    >
+                      <img src="/icon-search.svg" alt="" />
+                    </button>
+                  </div>
                 </div>
-                <button className="clear-button" onClick={handleClearFilter}>
-                  Clear
-                </button>
-              </div>
-              <div className="search">
-                <input
-                  placeholder="search"
-                  value={keyword}
-                  onChange={(e) => {
-                    setKeyord(e.target.value)
+                <div className="temporary-question-list">
+                  {questions.map((question) => {
+                    return (
+                      <QuestionUnit
+                        question={question}
+                        setSelectedQuestion={setSelectedQuestion}
+                        setIsShowReplyPopUp={setIsShowReplyPopUp}
+                        key={`question-${question.id}`}
+                      />
+                    )
+                  })}
+                </div>
+                <button
+                  className="load-more-button"
+                  style={{ display: isNextPage ? 'block' : 'none' }}
+                  onClick={() => {
+                    getQuestions(paging + 1)
+                    setPaging(paging + 1)
                   }}
-                />
-                <button className="search-button" onClick={handleSearchClick}>
-                  <img src="/icon-search.svg" alt="" />
+                >
+                  Load More
                 </button>
-              </div>
-            </div>
-            <div className="temporary-question-list">
-              {questions.map((question) => {
-                return (
-                  <QuestionUnit
-                    question={question}
-                    setSelectedQuestion={setSelectedQuestion}
-                    setIsShowReplyPopUp={setIsShowReplyPopUp}
-                    key={`question-${question.id}`}
-                  />
-                )
-              })}
-            </div>
-            <button
-              className="load-more-button"
-              style={{ display: isNextPage ? 'block' : 'none' }}
-              onClick={() => {
-                getQuestions(paging + 1)
-                setPaging(paging + 1)
-              }}
-            >
-              Load More
-            </button>
+              </>
+            )}
           </div>
         </div>
       </div>
