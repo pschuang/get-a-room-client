@@ -23,6 +23,12 @@ const ChatScreen = ({ socket, roomId }) => {
     setMessageQueue([...messageQueue, data])
   })
 
+  // TODO: 開啟配對聊天室之後，後端會發送 match-time-end 事件
+  socket.on('match-time-end', () => {
+    console.log("time's up!")
+    alert('time is up!')
+  })
+
   return (
     <>
       <div className="message-container">
