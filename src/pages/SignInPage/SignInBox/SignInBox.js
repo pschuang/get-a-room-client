@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './SignInBox.css'
 import axios from '../../../api/axios'
+import Swal from 'sweetalert2'
 
 const SignInBox = ({ setIslocalStorageChanged }) => {
   const navigate = useNavigate()
@@ -45,10 +46,17 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
 
       setEmail('')
       setPassword('')
-      alert('you sign in successfully')
-      navigate('/')
+      Swal.fire({
+        title: 'Cool!',
+        text: 'Welcome!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(`/`)
+        }
+      })
     } catch (error) {
       console.log('Woops! Error!', error)
+      // TODO:
       // if (error.response.status === 400 || error.response.status === 403) {
       //   alert(error.response.data.error)
       // }

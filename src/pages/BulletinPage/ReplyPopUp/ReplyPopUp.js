@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './ReplyPopUp.css'
 import axios from '../../../api/axios'
+import Swal from 'sweetalert2'
 
 const ReplyPopUp = ({ onClose, question }) => {
   const [reply, setReply] = useState('')
@@ -16,12 +17,26 @@ const ReplyPopUp = ({ onClose, question }) => {
       })
       setReply('')
       if (response.status === 200) {
-        alert('created reply successfully')
-        onClose()
-        window.location.reload();
+        Swal.fire({
+          title: 'Great!',
+          text: 'Created reply successfully',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            onClose()
+            window.location.reload()
+          }
+        })
       }
     } catch (error) {
       console.log('ERROR: ', error)
+      Swal.fire({
+        title: 'Oops!',
+        text: error.response.data.message,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload()
+        }
+      })
     }
   }
   return (

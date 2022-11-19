@@ -2,6 +2,7 @@ import './Header.css'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../api/axios'
+import Swal from 'sweetalert2'
 
 const Header = ({ socket }) => {
   //
@@ -30,8 +31,14 @@ const Header = ({ socket }) => {
       setIsSignIn(true)
     } catch (error) {
       console.log('ERROR', error)
-      alert('not authorized, please sign in!')
-      navigate('/signin')
+      Swal.fire({
+        title: 'Oops!',
+        text: 'not authorized, please sign in!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(`/signin`)
+        }
+      })
     }
   }
 
@@ -49,18 +56,19 @@ const Header = ({ socket }) => {
     }
   })
 
-  socket.on('create-room-fail', ({ message }) => {
-    console.log(message)
-  })
-
   const handleLogout = () => {
     // socket.emit('logout')
     socket.disconnect()
     window.localStorage.removeItem('user_id')
     window.localStorage.removeItem('access_token')
     setIsSignIn(false)
-    alert("You've logged out")
-    navigate('/signin')
+    Swal.fire({
+      title: "You've logged out",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/signin`)
+      }
+    })
   }
 
   return (

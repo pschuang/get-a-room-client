@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../../api/axios'
+import Swal from 'sweetalert2'
 import dayjs from 'dayjs'
 var utc = require('dayjs/plugin/utc')
 var isBetween = require('dayjs/plugin/isBetween')
@@ -59,8 +60,14 @@ const ChatScreen = ({ socket, roomId }) => {
   })
 
   socket.on('join-room-fail', ({ message }) => {
-    alert(message)
-    navigate('/')
+    Swal.fire({
+      title: 'Oops!',
+      text: message,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/`)
+      }
+    })
   })
 
   socket.on('connect_error', (err) => {

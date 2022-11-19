@@ -28,3 +28,7 @@ p {
 * {
   box-sizing: border-box;
 }
+
+.swal2-styled.swal2-confirm {
+  background-color: #ff7557 !important;
+}

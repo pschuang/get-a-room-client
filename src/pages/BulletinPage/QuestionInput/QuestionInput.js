@@ -2,6 +2,7 @@ import './QuestionInput.css'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../../api/axios'
+import Swal from 'sweetalert2'
 
 const categoryList = [
   { id: 1, color: '#FFBDD9', name: 'sport' },
@@ -69,11 +70,25 @@ const QuestionInput = () => {
       console.log(response)
       setQuestionContent('')
       if (response.status === 200) {
-        alert('created question successfully')
-        window.location.reload()
+        Swal.fire({
+          title: 'Great!',
+          text: 'Created question successfully',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload()
+          }
+        })
       }
     } catch (error) {
       console.log('ERROR: ', error)
+      Swal.fire({
+        title: 'Oops!',
+        text: error.response.data.message,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload()
+        }
+      })
     }
   }
 

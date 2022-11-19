@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import './SignUpBox.css'
 import axios from '../../../api/axios'
+import Swal from 'sweetalert2'
 
 const SignUpBox = () => {
   const navigate = useNavigate()
@@ -41,8 +42,14 @@ const SignUpBox = () => {
     setPassword('')
     setPictureId('')
     if (response.status === 200) {
-      alert('you sign up successfully')
-      navigate('/signin')
+      Swal.fire({
+        title: 'Signed up successfully',
+        text: 'Please sign in!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(`/signin`)
+        }
+      })
     }
   }
   return (
