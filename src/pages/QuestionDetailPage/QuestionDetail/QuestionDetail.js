@@ -3,11 +3,13 @@ import './QuestionDetail.css'
 import ReplyList from '../ReplyList/ReplyList'
 import axios from '../../../api/axios'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const QuestionDetail = ({ questionId, socket }) => {
   const navigate = useNavigate()
   const [repliers, setRepliers] = useState([])
   const [content, setContent] = useState('')
+  const [isClosed, setIsClosed] = useState(false)
 
   useEffect(() => {
     getQuestionsDetails()
@@ -18,18 +20,36 @@ const QuestionDetail = ({ questionId, socket }) => {
       const response = await axios.get(`/questions/details/${questionId}`)
       setContent(response.data.content)
       setRepliers(response.data.repliers)
-      console.log('got question details!')
+      setIsClosed(response.data.isClosed)
     } catch (error) {
-      alert(error.response.data.message, 'now navigating to bullentin page')
-      navigate(`/`)
+      Swal.fire({
+        title: 'Oops!',
+        text: error.response.data.message,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(`/`)
+        }
+      })
     }
   }
+
+  socket.on('create-room-fail', ({ message }) => {
+    Swal.fire({
+      title: 'Oops!',
+      text: message,
+    })
+  })
 
   return (
     <div className="question-detail">
       <h1>Your Question: {questionId}</h1>
       <div className="question">{content}</div>
-      <ReplyList repliers={repliers} socket={socket} />
+      <ReplyList
+        repliers={repliers}
+        socket={socket}
+        questionId={questionId}
+        isClosed={isClosed}
+      />
     </div>
   )
 }
