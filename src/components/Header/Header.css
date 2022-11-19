@@ -1,31 +1,47 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 70px;
   background-color: #333333;
   text-align: center;
   color: white;
-  padding: 20px 50px;
+  padding: 0 50px;
   gap: 20px;
-  margin-bottom: 20px
+  /* margin-bottom: 20px; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .logo {
   cursor: pointer;
+  padding-top: 4px;
 }
 
-.header > h3 {
+.logo > img {
+  height: 48px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-right > h3 {
   flex: 1;
 }
 
-.header > img {
+.header-right > img {
   width: 48px;
   height: 48px;
   object-fit: cover;
   border-radius: 50%;
 }
 
-.header > button {
+.header-right > button {
   background-color: silver;
   border-radius: 16px;
 }

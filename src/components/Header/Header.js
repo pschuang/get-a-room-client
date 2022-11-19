@@ -5,9 +5,6 @@ import axios from '../../api/axios'
 import Swal from 'sweetalert2'
 
 const Header = ({ socket }) => {
-  //
-  const [isShowPopUp, setIsShowPopUp] = useState(false)
-  const [createdRoomId, setCreatedRoomId] = useState(null)
   const [nickname, setNickname] = useState('')
   const [picture, setPicture] = useState('')
   const [isSignedIn, setIsSignIn] = useState(false)
@@ -51,8 +48,14 @@ const Header = ({ socket }) => {
       navigate(`/matchChat/${roomId}`)
     } else {
       // show popup to notify
-      setIsShowPopUp(true)
-      setCreatedRoomId(roomId)
+      Swal.fire({
+        title: "You're picked!",
+        text: 'Go to chat!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(`/matchChat/${roomId}`)
+        }
+      })
     }
   })
 
@@ -79,21 +82,13 @@ const Header = ({ socket }) => {
           navigate('/')
         }}
       >
-        This is logo
+        <img src="/get-a-room-white.svg" alt="" />
       </div>
-      {isShowPopUp && (
-        <button
-          onClick={() => {
-            navigate(`/matchChat/${createdRoomId}`)
-          }}
-        >
-          You're picked! go to chat!
-        </button>
-      )}
-      <h3>This is header</h3>
-      <img src={picture} alt="" />
-      <div>{nickname}</div>
-      {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
+      <div className="header-right">
+        <img src={picture} alt="" />
+        <div>{nickname}</div>
+        {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
+      </div>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import './ReplyPopUp.css'
 import axios from '../../../api/axios'
 import Swal from 'sweetalert2'
 
-const ReplyPopUp = ({ onClose, question }) => {
+const ReplyPopUp = ({ onClose, question, picture }) => {
   const [reply, setReply] = useState('')
   const createReply = async () => {
     try {
@@ -54,7 +54,7 @@ const ReplyPopUp = ({ onClose, question }) => {
           <p>{question.reply_counts}</p>
         </div>
         <div className="reply-popup-container-bottom">
-          <img src="/dog.png" alt="" />
+          <img src={picture} alt="" />
           <input
             placeholder="Write a reply..."
             value={reply}

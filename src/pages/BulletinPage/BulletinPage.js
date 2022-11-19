@@ -31,6 +31,7 @@ const BulletinPage = ({ socket }) => {
   const [isBulletinClosed, setIsBulletinClosed] = useState(false)
   const [closedTime, setClosedTime] = useState('')
   const [nextOpenTime, setNextOpenTime] = useState('')
+  const [picture, setPicture] = useState('')
 
   let [searchParams, setSearchParams] = useSearchParams()
   let location = useLocation()
@@ -124,7 +125,7 @@ const BulletinPage = ({ socket }) => {
               </>
             ) : (
               <>
-                <QuestionInput />
+                <QuestionInput picture={picture} setPicture={setPicture} />
                 <div className="category-search-container">
                   <div>
                     <div className="category-list">
@@ -193,6 +194,7 @@ const BulletinPage = ({ socket }) => {
         <ReplyPopUp
           question={selectedQuestion}
           onClose={() => setIsShowReplyPopUp(false)}
+          picture={picture}
         />
       )}
     </>

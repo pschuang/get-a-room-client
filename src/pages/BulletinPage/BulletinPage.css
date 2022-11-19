@@ -5,16 +5,19 @@ h1 {
 .main-page-container {
   background-color: #fff174;
   min-height: 100vh;
+  padding-top: 70px;
 }
 
 .bulletin-page-container {
   display: flex;
-  max-width: 1280px;
-  margin: 0 auto;
 }
 
 .bulletin-main-container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .category-search-container {

@@ -14,14 +14,13 @@ const categoryList = [
   { id: 7, color: 'blue', name: 'leisure' },
 ]
 
-const QuestionInput = () => {
+const QuestionInput = ({ picture, setPicture }) => {
   const [questionContent, setQuestionContent] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
   const [isCreated, setIsCreated] = useState(false)
   const [questionInfo, setQuestionInfo] = useState({})
   const [nickname, setNickname] = useState('')
-  const [picture, setPicture] = useState('')
 
   const navigate = useNavigate()
 
