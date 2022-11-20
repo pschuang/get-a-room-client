@@ -23,27 +23,12 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
           password: password,
         },
       })
-      console.log(response.data)
 
       const { access_token, user } = response.data
       window.localStorage.setItem('access_token', access_token)
       window.localStorage.setItem('user_id', user.id)
       // 當使用者登入時，會更改狀態並觸發 checkUserData，使 client 端重新建立連線
       setIslocalStorageChanged((prev) => prev + 1)
-      //
-      // const newSocket = io('http://localhost:8000', {
-      //   autoConnect: false,
-      //   auth: { token: access_token },
-      // })
-      // setSocket(newSocket)
-      // newSocket.connect()
-
-      //
-      // socket.auth.token = access_token
-      // socket.connect()
-      //
-      // socket.emit('user-id', user.id)
-
       setEmail('')
       setPassword('')
       Swal.fire({
@@ -55,11 +40,10 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
         }
       })
     } catch (error) {
-      console.log('Woops! Error!', error)
-      // TODO:
-      // if (error.response.status === 400 || error.response.status === 403) {
-      //   alert(error.response.data.error)
-      // }
+      Swal.fire({
+        title: 'Oops!',
+        text: error.response.data.error,
+      })
     }
   }
 

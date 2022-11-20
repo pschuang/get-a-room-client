@@ -145,6 +145,7 @@ const QuestionInput = ({ picture, setPicture }) => {
                   return (
                     <div
                       className="dropdown-item"
+                      key={item.name}
                       onClick={() => handleItemClick(item.id)}
                     >
                       {item.name}

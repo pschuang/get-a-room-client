@@ -4,6 +4,18 @@ import './SignUpBox.css'
 import axios from '../../../api/axios'
 import Swal from 'sweetalert2'
 
+const pictureList = [
+  { id: 1, pictureURL: 'rabbit.png' },
+  { id: 2, pictureURL: 'puffer-fish.png' },
+  { id: 3, pictureURL: 'bear.png' },
+  { id: 4, pictureURL: 'deer.png' },
+  { id: 5, pictureURL: 'dog.png' },
+  { id: 6, pictureURL: 'elephant.png' },
+  { id: 7, pictureURL: 'lion.png' },
+  { id: 8, pictureURL: 'llama.png' },
+  { id: 9, pictureURL: 'ostrich.png' },
+  { id: 10, pictureURL: 'panda.png' },
+]
 const SignUpBox = () => {
   const navigate = useNavigate()
   const [name, setName] = useState('')
@@ -19,29 +31,30 @@ const SignUpBox = () => {
   }
 
   // select picture
-  const selectPicture = (e) => {
-    setPictureId(e.target.dataset.id)
+  const selectPicture = (id) => {
+    setPictureId(id)
   }
   // sign up
   const signup = async () => {
-    const response = await axios({
-      method: 'POST',
-      url: '/user/signup',
-      data: {
-        name: name,
-        nickname: nickname,
-        email: email,
-        password: password,
-        picture_id: parseInt(pictureId),
-      },
-    })
-    console.log(response)
-    setName('')
-    setNickname('')
-    setEmail('')
-    setPassword('')
-    setPictureId('')
-    if (response.status === 200) {
+    try {
+      const response = await axios({
+        method: 'POST',
+        url: '/user/signup',
+        data: {
+          name: name,
+          nickname: nickname,
+          email: email,
+          password: password,
+          picture_id: parseInt(pictureId),
+        },
+      })
+      console.log(response)
+      setName('')
+      setNickname('')
+      setEmail('')
+      setPassword('')
+      setPictureId('')
+
       Swal.fire({
         title: 'Signed up successfully',
         text: 'Please sign in!',
@@ -49,6 +62,11 @@ const SignUpBox = () => {
         if (result.isConfirmed) {
           navigate(`/signin`)
         }
+      })
+    } catch (error) {
+      Swal.fire({
+        title: 'Oops!',
+        text: error.response.data.error,
       })
     }
   }
@@ -92,28 +110,20 @@ const SignUpBox = () => {
           ></input>
           <label htmlFor="nickname">Choose a picture</label>
           <div className="image-options-list">
-            <img src="rabbit.png" alt="" data-id="1" onClick={selectPicture} />
-            <img
-              src="puffer-fish.png"
-              alt=""
-              data-id="2"
-              onClick={selectPicture}
-            />
-            <img src="bear.png" alt="" data-id="3" onClick={selectPicture} />
-            <img src="deer.png" alt="" data-id="4" onClick={selectPicture} />
-            <img src="dog.png" alt="" data-id="5" onClick={selectPicture} />
-            <img
-              src="elephant.png"
-              alt=""
-              data-id="6"
-              onClick={selectPicture}
-            />
-            <img src="lion.png" alt="" data-id="7" onClick={selectPicture} />
-            <img src="llama.png" alt="" data-id="8" onClick={selectPicture} />
-            <img src="ostrich.png" alt="" data-id="9" onClick={selectPicture} />
-            <img src="panda.png" alt="" data-id="10" onClick={selectPicture} />
+            {pictureList.map((item) => {
+              return (
+                <img
+                  className={pictureId === item.id ? 'picture-active' : ''}
+                  src={item.pictureURL}
+                  alt=""
+                  key={`${item.id}-picture`}
+                  onClick={() => {
+                    selectPicture(item.id)
+                  }}
+                />
+              )
+            })}
           </div>
-          <div>the is picture id : {pictureId}</div>
         </form>
         <button className="signup-button" onClick={signup}>
           Sign up

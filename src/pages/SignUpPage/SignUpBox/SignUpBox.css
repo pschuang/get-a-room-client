@@ -88,3 +88,7 @@ span {
   margin: 10px auto;
   color: #000000;
 }
+
+.picture-active {
+  border: 3px solid #6e696b;
+}
