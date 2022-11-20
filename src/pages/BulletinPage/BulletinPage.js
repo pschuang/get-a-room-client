@@ -113,9 +113,9 @@ const BulletinPage = ({ socket }) => {
     <>
       <div className="main-page-container">
         <Header socket={socket} />
-        <div className="bulletin-page-container">
-          <FriendList />
-          <div className="bulletin-main-container">
+        <FriendList />
+        <div className="page-right-container">
+          <div className="main-content-container">
             {isBulletinClosed ? (
               <>
                 <h1>已打烊</h1>
@@ -124,7 +124,7 @@ const BulletinPage = ({ socket }) => {
                 <h2>明日開放時間: {nextOpenTime}</h2>
               </>
             ) : (
-              <>
+              <div className="bulletin-main-container">
                 <QuestionInput picture={picture} setPicture={setPicture} />
                 <div className="category-search-container">
                   <div>
@@ -185,7 +185,7 @@ const BulletinPage = ({ socket }) => {
                 >
                   Load More
                 </button>
-              </>
+              </div>
             )}
           </div>
         </div>

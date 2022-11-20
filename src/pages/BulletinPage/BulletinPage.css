@@ -8,11 +8,11 @@ h1 {
   padding-top: 70px;
 }
 
-.bulletin-page-container {
-  display: flex;
+.page-right-container {
+  padding-left: 350px;
 }
 
-.bulletin-main-container {
+.main-content-container {
   flex: 1;
   display: flex;
   flex-direction: column;

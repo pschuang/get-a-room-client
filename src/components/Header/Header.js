@@ -59,6 +59,31 @@ const Header = ({ socket }) => {
     }
   })
 
+  // 接 成為好友事件
+  socket.on('be-friends-success', () => {
+    Swal.fire({
+      title: 'Congrats!',
+      text: 'You have a new friend!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/`)
+        window.location.reload()
+      }
+    })
+  })
+
+  // 接 不能成為好友事件
+  socket.on('be-friends-fail', () => {
+    Swal.fire({
+      title: 'Ouch!',
+      text: 'Match failed, please come back tmr.',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/`)
+      }
+    })
+  })
+
   const handleLogout = () => {
     // socket.emit('logout')
     socket.disconnect()

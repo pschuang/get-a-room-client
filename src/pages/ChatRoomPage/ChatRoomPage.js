@@ -8,13 +8,14 @@ const ChatRoomPage = ({ socket }) => {
   const { roomId } = useParams()
   return (
     <>
-      <Header socket={socket} />
-      <h1>Welcome to this ChatRoomPage</h1>
-      <h2>Room {roomId}</h2>
-      <div className="page-container">
+      <div className="main-page-container">
+        <Header socket={socket} />
         <FriendList />
-        <div className="main-content-container">
-          <ChatScreen socket={socket} roomId={roomId} />
+        <div className="page-right-container">
+          <div className="main-content-container">
+            <h2>Room {roomId}</h2>
+            <ChatScreen socket={socket} roomId={roomId} />
+          </div>
         </div>
       </div>
     </>

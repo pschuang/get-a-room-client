@@ -33,14 +33,17 @@ const ChatScreen = ({ socket, roomId }) => {
     Swal.fire({
       title: 'Do you want to be friend?',
       showDenyButton: true,
-      showCancelButton: true,
       confirmButtonText: 'YES',
       denyButtonText: `NO`,
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         // TODO: 要
+        socket.emit('agree-to-be-friend', { roomId, userId })
+        navigate('/')
       } else if (result.isDenied) {
         // TODO: 不要
+        navigate('/')
       }
     })
   })

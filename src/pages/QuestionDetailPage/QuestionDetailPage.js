@@ -10,10 +10,12 @@ const QuestionDetailPage = ({ socket }) => {
   return (
     <>
       <Header socket={socket} />
-      <div className="page-container">
+      <div className="main-page-container">
         <FriendList />
-        <div className="main-content-container">
-          <QuestionDetail questionId={id} socket={socket} />
+        <div className="page-right-container">
+          <div className="main-content-container">
+            <QuestionDetail questionId={id} socket={socket} />
+          </div>
         </div>
       </div>
     </>
