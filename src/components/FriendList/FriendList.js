@@ -35,7 +35,7 @@ const FriendList = () => {
         >
           <img src={friend.pictureURL} alt="" />
           <p>
-            <b>{friend.nickname}</b> user id: {friend.userId}
+            <b>{friend.nickname}</b>
           </p>
         </div>
       ))}
