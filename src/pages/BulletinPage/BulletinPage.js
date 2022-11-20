@@ -29,6 +29,7 @@ const BulletinPage = ({ socket }) => {
   const [isShowReplyPopUp, setIsShowReplyPopUp] = useState(false)
   const [selectedQuestion, setSelectedQuestion] = useState({})
   const [isBulletinClosed, setIsBulletinClosed] = useState(false)
+  const [openTime, setOpenTime] = useState('')
   const [closedTime, setClosedTime] = useState('')
   const [nextOpenTime, setNextOpenTime] = useState('')
   const [picture, setPicture] = useState('')
@@ -87,6 +88,12 @@ const BulletinPage = ({ socket }) => {
       if (err.response.status === 423) {
         console.log('ERRORRRRRR:', err.response.data)
         setIsBulletinClosed(true)
+        setOpenTime(
+          dayjs(err.response.data.openAt)
+            .utc(true)
+            .local()
+            .format('YYYY-MM-DD HH:mm')
+        )
         setClosedTime(
           dayjs(err.response.data.closedAt)
             .utc(true)
@@ -117,12 +124,15 @@ const BulletinPage = ({ socket }) => {
         <div className="page-right-container">
           <div className="main-content-container">
             {isBulletinClosed ? (
-              <>
+              <div className="closed-container">
                 <h1>已打烊</h1>
+                <img src="/closed.png" width="40%" alt="" />
                 <br />
-                <h2>今日終了時間: {closedTime}</h2>
+                <h2>
+                  今日開放時間: {openTime} - {closedTime}
+                </h2>
                 <h2>明日開放時間: {nextOpenTime}</h2>
-              </>
+              </div>
             ) : (
               <div className="bulletin-main-container">
                 <QuestionInput picture={picture} setPicture={setPicture} />

@@ -44,4 +44,6 @@
 .header-right > button {
   background-color: silver;
   border-radius: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
 }
