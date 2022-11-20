@@ -21,6 +21,7 @@ const QuestionDetail = ({ questionId, socket }) => {
       setContent(response.data.content)
       setRepliers(response.data.repliers)
       setIsClosed(response.data.isClosed)
+      console.log(response.data)
     } catch (error) {
       Swal.fire({
         title: 'Oops!',
@@ -42,8 +43,9 @@ const QuestionDetail = ({ questionId, socket }) => {
 
   return (
     <div className="question-detail">
-      <h1>Your Question: {questionId}</h1>
-      <div className="question">{content}</div>
+      <h3 className="question-content">{content}</h3>
+      {isClosed && <h4>You've been matched today!</h4>}
+
       <ReplyList
         repliers={repliers}
         socket={socket}

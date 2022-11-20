@@ -24,18 +24,23 @@ const ReplyList = ({ repliers, socket, questionId, isClosed }) => {
   return (
     <>
       {repliers.map((replier) => (
-        <div
-          key={replier.userId}
-          onClick={() => {
-            createChat(replier)
-          }}
-          className="reply"
-        >
-          <div className="replier">
-            <img src={replier.pictureURL} alt="" />
-            <p>{replier.nickname}</p>
+        <div key={replier.userId} className="reply">
+          <div className="reply-left">
+            <div className="replier">
+              <img src={replier.pictureURL} alt="" />
+              <p>{replier.nickname}</p>
+            </div>
+            <p className="answer">{replier.answer}</p>
           </div>
-          <div>{replier.answer}</div>
+          {!isClosed && (
+            <button
+              onClick={() => {
+                createChat(replier)
+              }}
+            >
+              pick me
+            </button>
+          )}
         </div>
       ))}
     </>
