@@ -29,7 +29,9 @@ const QuestionUnit = ({
           <img src={question.pictureURL} alt="" />
           <div style={{ margin: '10px' }}>{question.nickname}</div>
         </div>
-        <div className="question-box-question">{question.content}</div>
+        <div className="question-box-question">
+          <p>{question.content}</p>
+        </div>
         <div className="question-box-bottom">
           <img src="/icon-comment.svg" alt="" />
           <div>{question.reply_counts}</div>

@@ -39,9 +39,14 @@
 
 .question-box-question {
   flex: 1;
-  /* background-color: dodgerblue; */
   padding: 10px;
-  overflow-wrap: break-word;
+}
+.question-box-question p {
+  -webkit-box-orient: vertical;
+  display: block /* Fallback for non-WebKit */;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .question-box-bottom {
