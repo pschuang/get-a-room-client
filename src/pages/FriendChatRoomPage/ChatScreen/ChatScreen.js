@@ -20,6 +20,7 @@ const ChatScreen = ({ socket, roomId }) => {
   const scrollToBottom = () => {
     messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
+
   useEffect(scrollToBottom, [messageQueue])
 
   useEffect(() => {
@@ -56,7 +57,14 @@ const ChatScreen = ({ socket, roomId }) => {
       userId,
     })
     setMessage('')
-    setMessageQueue([...messageQueue, { userId, message }])
+    setMessageQueue([
+      ...messageQueue,
+      {
+        userId,
+        message,
+        created_at: dayjs().utc().format('YYYY-MM-DD HH:mm:ss'),
+      },
+    ])
   }
 
   socket.on('receive-message-from-friend', (data) => {

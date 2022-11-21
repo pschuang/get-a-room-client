@@ -40,9 +40,10 @@
 
 .counterpart-message {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: start;
   align-items: center;
-  flex-direction: row-reverse;
+  padding-bottom: 10px;
 }
 
 .my-message > div,
