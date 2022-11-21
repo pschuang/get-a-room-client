@@ -10,6 +10,7 @@ const QuestionDetail = ({ questionId, socket }) => {
   const [repliers, setRepliers] = useState([])
   const [content, setContent] = useState('')
   const [isClosed, setIsClosed] = useState(false)
+  const [isReplied, setIsreplied] = useState(true)
 
   useEffect(() => {
     getQuestionsDetails()
@@ -18,6 +19,9 @@ const QuestionDetail = ({ questionId, socket }) => {
   const getQuestionsDetails = async () => {
     try {
       const response = await axios.get(`/questions/details/${questionId}`)
+      if (!response.data.repliers[0].userId) {
+        setIsreplied(false)
+      }
       setContent(response.data.content)
       setRepliers(response.data.repliers)
       setIsClosed(response.data.isClosed)
@@ -44,14 +48,18 @@ const QuestionDetail = ({ questionId, socket }) => {
   return (
     <div className="question-detail">
       <h3 className="question-content">{content}</h3>
-      {isClosed && <h4>You've been matched today!</h4>}
+      {isClosed ? <h4>You've been matched today!</h4> : ''}
 
-      <ReplyList
-        repliers={repliers}
-        socket={socket}
-        questionId={questionId}
-        isClosed={isClosed}
-      />
+      {!isReplied ? (
+        <div>Your question has no reply yet.</div>
+      ) : (
+        <ReplyList
+          repliers={repliers}
+          socket={socket}
+          questionId={questionId}
+          isClosed={isClosed}
+        />
+      )}
     </div>
   )
 }
