@@ -104,7 +104,7 @@ const Header = ({ socket }) => {
       <div
         className="logo"
         onClick={() => {
-          navigate('/')
+          window.location.href = '/'
         }}
       >
         <img src="/get-a-room-white.svg" alt="" />

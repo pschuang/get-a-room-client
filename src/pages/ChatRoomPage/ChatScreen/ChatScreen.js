@@ -42,6 +42,7 @@ const ChatScreen = ({ socket, roomId }) => {
   }
 
   const sendMessage = () => {
+    if (!message) return
     // 把訊息送給正在聊天的人所在的 room
     socket.emit('send-message', {
       roomId,

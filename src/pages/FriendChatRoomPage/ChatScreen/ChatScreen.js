@@ -44,6 +44,7 @@ const ChatScreen = ({ socket, roomId }) => {
   }, [roomId])
 
   const sendMessageToFriend = () => {
+    if (!message) return
     console.log('send msg - friend')
 
     socket.emit('send-message-to-friend', {
