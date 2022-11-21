@@ -14,6 +14,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
 .question-input-container-top > img {
@@ -66,8 +67,9 @@ input:placeholder-shown {
 
 .dropdown {
   width: 300px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin-left: 12px;
+  border-radius: 60px;
+  border: 1px solid #333333;
   background-color: white;
 }
 

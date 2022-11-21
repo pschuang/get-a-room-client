@@ -113,8 +113,8 @@ const QuestionInput = ({ picture, setPicture }) => {
         <>
           <div className="question-input-container-top">
             <img src={questionInfo.pictureURL} alt="" />
-            <div>{questionInfo.nickname}</div>
-            <div>{questionInfo.category}</div>
+            <b>{questionInfo.nickname}</b>
+            <div>#{questionInfo.category}</div>
           </div>
           <p>{questionInfo.content}</p>
           <div className="question-input-container-bottom">
@@ -129,7 +129,7 @@ const QuestionInput = ({ picture, setPicture }) => {
         <>
           <div className="question-input-container-top">
             <img src={picture} alt="" />
-            <div>{nickname}</div>
+            <b>{nickname}</b>
             <div className="dropdown">
               <div className="dropdown-header" onClick={handleOpen}>
                 {selectedCategoryId

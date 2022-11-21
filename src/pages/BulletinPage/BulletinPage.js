@@ -116,6 +116,10 @@ const BulletinPage = ({ socket }) => {
     setPaging(0)
   }, [location])
 
+  const handleRefreshQuestions = () => {
+    getQuestions()
+  }
+
   return (
     <>
       <div className="main-page-container">
@@ -155,6 +159,12 @@ const BulletinPage = ({ socket }) => {
                       onClick={handleClearFilter}
                     >
                       Clear
+                    </button>
+                    <button
+                      onClick={handleRefreshQuestions}
+                      className="clear-button refresh-button"
+                    >
+                      Refresh
                     </button>
                   </div>
                   <div className="search">

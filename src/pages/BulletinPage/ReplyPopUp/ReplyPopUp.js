@@ -45,8 +45,8 @@ const ReplyPopUp = ({ onClose, question, picture }) => {
       <div className="reply-popup-container">
         <div className="reply-popup-container-top">
           <img src={question.pictureURL} alt="" />
-          <p>{question.nickname}</p>
-          <div>{question.category}</div>
+          <b>{question.nickname}</b>
+          <div>#{question.category}</div>
         </div>
         <p>{question.content}</p>
         <div className="reply-popup-container-middle">
