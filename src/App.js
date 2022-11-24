@@ -6,6 +6,7 @@ import FriendChatRoomPage from './pages/FriendChatRoomPage/FriendChatRoomPage'
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage'
 import SignUpPage from './pages/SignUpPage/SignUpPage'
 import SignInPage from './pages/SignInPage/SignInPage'
+import AdminPage from './pages/AdminPage/AdminPage'
 import { io } from 'socket.io-client'
 
 const App = () => {
@@ -61,6 +62,7 @@ const App = () => {
           <SignInPage setIslocalStorageChanged={setIslocalStorageChanged} />
         }
       />
+      <Route exact path="/admin" element={<AdminPage socket={socket} />} />
     </Routes>
   )
 }
