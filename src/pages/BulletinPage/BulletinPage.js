@@ -129,7 +129,6 @@ const BulletinPage = ({ socket }) => {
           <div className="main-content-container">
             {isBulletinClosed ? (
               <div className="closed-container">
-                <h1>已打烊</h1>
                 <img src="/closed.png" width="40%" alt="" />
                 <br />
                 <h2>

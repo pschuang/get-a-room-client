@@ -84,11 +84,6 @@ const Header = ({ socket }) => {
     })
   })
 
-  // online-count event
-  socket.on('online-count', (count) => {
-    console.log('online counts: ', count)
-  })
-
   const handleLogout = () => {
     // socket.emit('logout')
     socket.disconnect()

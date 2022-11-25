@@ -99,7 +99,7 @@
 }
 
 .broadcast-box {
-    height: 90%;
+  height: 90%;
   overflow-y: scroll;
 }
 
@@ -110,9 +110,11 @@
   margin-top: 10px;
 }
 
-.dashboard-lower-content-box p {
+.dashboard-lower-content-box p,
+.dashboard-upper-content p {
   font-weight: 700;
   font-size: 20px;
+  margin-bottom: 8px;
 }
 
 .stat-item {
