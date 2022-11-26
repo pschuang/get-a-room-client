@@ -5,9 +5,7 @@ import axios from '../../../api/axios'
 import Swal from 'sweetalert2'
 import dayjs from 'dayjs'
 var utc = require('dayjs/plugin/utc')
-var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
 dayjs.extend(utc)
-dayjs.extend(timezone)
 
 const ChatScreen = ({ socket, roomId }) => {
   console.log('now in chatscreen component...')

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../api/axios'
 import Swal from 'sweetalert2'
+import Clock from '../Clock/Clock'
 
 const Header = ({ socket }) => {
   const [nickname, setNickname] = useState('')
@@ -57,6 +58,8 @@ const Header = ({ socket }) => {
         allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
+          // 被選者答應加入聊天後發送事件
+          socket.emit('counterpart-join-match-room', { roomId, counterpart })
           navigate(`/matchChat/${roomId}`)
         }
       })
@@ -106,21 +109,24 @@ const Header = ({ socket }) => {
   }
 
   return (
-    <div className="header">
-      <div
-        className="logo"
-        onClick={() => {
-          window.location.href = '/'
-        }}
-      >
-        <img src="/get-a-room-white.svg" alt="" />
+    <>
+      <div className="header">
+        <div
+          className="logo"
+          onClick={() => {
+            window.location.href = '/'
+          }}
+        >
+          <img src="/get-a-room-white.svg" alt="" />
+        </div>
+        <div className="header-right">
+          <img src={picture} alt="" />
+          <div>{nickname}</div>
+          {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
+        </div>
       </div>
-      <div className="header-right">
-        <img src={picture} alt="" />
-        <div>{nickname}</div>
-        {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
-      </div>
-    </div>
+      <Clock socket={socket} />
+    </>
   )
 }
 
