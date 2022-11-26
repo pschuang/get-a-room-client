@@ -77,6 +77,8 @@ const ChatScreen = ({ socket, roomId }) => {
     Swal.fire({
       title: 'Oops!',
       text: message,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(`/`)

@@ -63,6 +63,14 @@ const App = () => {
         }
       />
       <Route exact path="/admin" element={<AdminPage socket={socket} />} />
+      <Route
+        path="*"
+        element={
+          <div style={{ padding: '200px', textAlign: 'center' }}>
+            <h4>404 - Not Found</h4>
+          </div>
+        }
+      />
     </Routes>
   )
 }

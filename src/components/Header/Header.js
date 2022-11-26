@@ -31,6 +31,8 @@ const Header = ({ socket }) => {
       Swal.fire({
         title: 'Oops!',
         text: 'not authorized, please sign in!',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/signin`)
@@ -51,6 +53,8 @@ const Header = ({ socket }) => {
       Swal.fire({
         title: "You're picked!",
         text: 'Go to chat!',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/matchChat/${roomId}`)
@@ -92,6 +96,8 @@ const Header = ({ socket }) => {
     setIsSignIn(false)
     Swal.fire({
       title: "You've logged out",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(`/signin`)

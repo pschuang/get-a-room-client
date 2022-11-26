@@ -30,6 +30,8 @@ const QuestionDetail = ({ questionId, socket }) => {
       Swal.fire({
         title: 'Oops!',
         text: error.response.data.message,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/`)

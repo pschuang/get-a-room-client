@@ -77,6 +77,8 @@ const ChatScreen = ({ socket, roomId }) => {
       confirmButtonText: 'YES',
       denyButtonText: `NO`,
       reverseButtons: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         socket.emit('agree-to-be-friend', { roomId, userId })
@@ -91,6 +93,8 @@ const ChatScreen = ({ socket, roomId }) => {
     Swal.fire({
       title: 'Oops!',
       text: err.message,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(`/`)

@@ -58,6 +58,8 @@ const SignUpBox = () => {
       Swal.fire({
         title: 'Signed up successfully',
         text: 'Please sign in!',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/signin`)

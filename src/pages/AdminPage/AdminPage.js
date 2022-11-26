@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './AdminPage.css'
 import axios from '../../api/axios'
 import Header from '../../components/Header/Header'
@@ -39,6 +40,7 @@ const AdminPage = ({ socket }) => {
   const [questionsInAWeek, setQuestionsInAWeek] = useState([])
   const [pageViewsInAWeek, setPageViewsInAWeek] = useState([])
   const [recentMatchDataQueue, setRecentMatchDataQueue] = useState([])
+  const navigate = useNavigate()
 
   const doughnutData = {
     labels: questionCountByCategory.map((item) => item.category),
@@ -102,6 +104,7 @@ const AdminPage = ({ socket }) => {
       setPageViewsInAWeek(response.data.pageViewsInAWeek)
     } catch (error) {
       console.log('ERROR', error)
+      navigate(`/`)
     }
   }
 

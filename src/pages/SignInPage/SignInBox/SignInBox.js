@@ -34,6 +34,8 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
       Swal.fire({
         title: 'Cool!',
         text: 'Welcome!',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/`)
