@@ -13,6 +13,7 @@ import {
   Title,
 } from 'chart.js'
 import { Doughnut, Bar } from 'react-chartjs-2'
+import dayjs from 'dayjs'
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -29,8 +30,10 @@ const AdminPage = ({ socket }) => {
   const [askedQuestionCount, setAskedQuestionCount] = useState(0)
   const [openQuestionCount, setOpenQuestionCount] = useState(0)
   const [friendshipCount, setFriendshipCount] = useState(0)
+  const [replyCount, setReplyCount] = useState(0)
   const [questionCountByCategory, setQuestionCountByCategory] = useState([])
   const [questionsInAWeek, setQuestionsInAWeek] = useState([])
+  const [recentMatchDataQueue, setRecentMatchDataQueue] = useState([])
 
   const doughnutData = {
     labels: questionCountByCategory.map((item) => item.category),
@@ -85,6 +88,9 @@ const AdminPage = ({ socket }) => {
   }
 
   useEffect(() => {
+    // join dashboard room
+    socket.emit('join-recent-matches-notify-room')
+
     // questions in a week
     getQuestionsInAWeek()
 
@@ -106,12 +112,14 @@ const AdminPage = ({ socket }) => {
 
   // refresh-dashboard-success
   socket.on('refresh-dashboard-success', (data) => {
+    console.log('refresh-dashboard-success......')
     const {
       askedQuestionCount,
       openQuestionCount,
       questionCountByCategory,
       userCount,
       friendshipCount,
+      replyCount,
     } = data
     console.log('DATA: ', data)
     setAskedQuestionCount(askedQuestionCount)
@@ -119,6 +127,13 @@ const AdminPage = ({ socket }) => {
     setQuestionCountByCategory(questionCountByCategory)
     setNewRegisterCount(userCount)
     setFriendshipCount(friendshipCount)
+    setReplyCount(replyCount)
+  })
+
+  socket.on('recent-match', (data) => {
+    console.log('recent-match......')
+    console.log('DATA: ', data)
+    setRecentMatchDataQueue([data, ...recentMatchDataQueue])
   })
 
   return (
@@ -159,14 +174,18 @@ const AdminPage = ({ socket }) => {
             <div className="dashboard-lower-content-box">
               <p>Recent Matches</p>
               <div className="broadcast-box">
-                <div>Haohao and Cleo matched !</div>
-                <div>Haohao and Cleo become friends !</div>
-                <div>Haohao and Cleo become friends !</div>
-                <div>Haohao and Cleo become friends !</div>
-                <div>Haohao and Cleo become friends !</div>
-                <div>Haohao and Cleo become friends !</div>
-                <div>Haohao and Cleo become friends !</div>
-                <div>Haohao and Cleo become friends !</div>
+                {recentMatchDataQueue.map((data, index) => {
+                  return (
+                    <div key={`match-${index}`}>
+                      {`user ${data.users[0]} and user ${data.users[1]}
+                      matched @ ${dayjs(data.time)
+                        .utc(true)
+                        .local()
+                        .format('YYYY-MM-DD HH:mm:ss')}
+                      `}
+                    </div>
+                  )
+                })}
               </div>
             </div>
             <div className="dashboard-lower-content-box">
@@ -180,10 +199,10 @@ const AdminPage = ({ socket }) => {
               </div>
               <div className="stat-item">
                 <p>Total Replies</p>
-                <span>22</span>
+                <span>{replyCount}</span>
               </div>
               <div className="stat-item">
-                <p>Recent Matches</p>
+                <p>New Friendships</p>
                 <span>{friendshipCount}</span>
               </div>
             </div>
