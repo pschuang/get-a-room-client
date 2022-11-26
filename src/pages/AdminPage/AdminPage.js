@@ -11,8 +11,10 @@ import {
   LinearScale,
   BarElement,
   Title,
+  PointElement,
+  LineElement,
 } from 'chart.js'
-import { Doughnut, Bar } from 'react-chartjs-2'
+import { Doughnut, Bar, Line } from 'react-chartjs-2'
 import dayjs from 'dayjs'
 ChartJS.register(
   ArcElement,
@@ -21,7 +23,9 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  Title
+  Title,
+  PointElement,
+  LineElement
 )
 
 const AdminPage = ({ socket }) => {
@@ -33,6 +37,7 @@ const AdminPage = ({ socket }) => {
   const [replyCount, setReplyCount] = useState(0)
   const [questionCountByCategory, setQuestionCountByCategory] = useState([])
   const [questionsInAWeek, setQuestionsInAWeek] = useState([])
+  const [pageViewsInAWeek, setPageViewsInAWeek] = useState([])
   const [recentMatchDataQueue, setRecentMatchDataQueue] = useState([])
 
   const doughnutData = {
@@ -74,7 +79,19 @@ const AdminPage = ({ socket }) => {
     ],
   }
 
-  const getQuestionsInAWeek = async () => {
+  const lineChartData = {
+    labels: pageViewsInAWeek.map((item) => item.time).reverse(),
+    datasets: [
+      {
+        data: pageViewsInAWeek.map((item) => item.views).reverse(),
+        borderColor: '#2695ff',
+        backgroundColor: '#2695ff',
+        tension: 0.4,
+      },
+    ],
+  }
+
+  const getWeekStats = async () => {
     try {
       const response = await axios({
         method: 'GET',
@@ -82,6 +99,7 @@ const AdminPage = ({ socket }) => {
       })
       console.log('WEEK questions: ', response.data)
       setQuestionsInAWeek(response.data.questionsInAWeek)
+      setPageViewsInAWeek(response.data.pageViewsInAWeek)
     } catch (error) {
       console.log('ERROR', error)
     }
@@ -92,7 +110,7 @@ const AdminPage = ({ socket }) => {
     socket.emit('join-recent-matches-notify-room')
 
     // questions in a week
-    getQuestionsInAWeek()
+    getWeekStats()
 
     socket.emit('refresh-dashboard')
 
@@ -161,12 +179,22 @@ const AdminPage = ({ socket }) => {
             </div>
             <div className="dashboard-upper-content-middle">
               <p>Page Views</p>
+              <Line
+                data={lineChartData}
+                options={{
+                  plugins: { legend: { display: false } },
+                  aspectRatio: 3 / 1,
+                }}
+              />
             </div>
             <div className="dashboard-upper-content-right">
               <p>Weekly Statistics</p>
               <Bar
                 data={barChartData}
-                options={{ plugins: { legend: { display: false } } }}
+                options={{
+                  aspectRatio: 3 / 2,
+                  plugins: { legend: { display: false } },
+                }}
               />
             </div>
           </div>
