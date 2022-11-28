@@ -16,7 +16,6 @@ const ChatScreen = ({ socket, roomId }) => {
   const navigate = useNavigate()
   const userId = window.localStorage.getItem('user_id')
   const messageEndRef = useRef(null)
-
   const scrollToBottom = () => {
     messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
@@ -30,7 +29,6 @@ const ChatScreen = ({ socket, roomId }) => {
   const getMessages = async () => {
     try {
       const response = await axios.get(`/chatroom/messages/${roomId}`)
-      console.log(response.data)
       setMessageQueue(response.data.messages)
       setCounterpartInfo(response.data.counterpartInfo)
     } catch (error) {
@@ -39,20 +37,12 @@ const ChatScreen = ({ socket, roomId }) => {
   }
 
   useEffect(() => {
-    console.log(roomId)
     socket.emit('join-room', { roomId })
   }, [roomId])
 
   const sendMessageToFriend = () => {
     if (!message) return
-    console.log('send msg - friend')
-
     socket.emit('send-message-to-friend', {
-      roomId,
-      message,
-      userId,
-    })
-    console.log('msg to friend: ', {
       roomId,
       message,
       userId,
@@ -69,7 +59,6 @@ const ChatScreen = ({ socket, roomId }) => {
   }
 
   socket.on('receive-message-from-friend', (data) => {
-    console.log(data)
     setMessageQueue([...messageQueue, data])
   })
 
@@ -92,7 +81,6 @@ const ChatScreen = ({ socket, roomId }) => {
 
   const handleKeypress = (e) => {
     if (e.key === 'Enter') {
-      console.log('enter key is press')
       sendMessageToFriend()
     }
   }

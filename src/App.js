@@ -23,11 +23,7 @@ const App = () => {
   const checkUserData = () => {
     const item = window.localStorage.getItem('access_token')
     if (item) {
-      console.log('before auth token', socket.auth.token)
       socket.auth.token = item
-      console.log(socket.auth.token, 'hihihihihi connect')
-
-      // TODO: SERVER JWT get user id (user-id emit)
       socket.connect()
     }
   }

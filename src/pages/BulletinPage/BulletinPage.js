@@ -39,9 +39,7 @@ const BulletinPage = ({ socket }) => {
 
   const handleCategoryClick = (category) => {
     searchParams.set('category', category)
-    console.log('searchParams before: ', searchParams.get('category'))
     setSearchParams(searchParams)
-    console.log('searchParams after: ', searchParams.get('category'))
   }
 
   const handleSearchClick = () => {
@@ -55,11 +53,8 @@ const BulletinPage = ({ socket }) => {
   }
 
   const getQuestions = async (loadmorePage) => {
-    console.log('getQuestions is called')
     const category = searchParams.get('category') || 'all'
-    console.log('category: ', category)
     const keyword = searchParams.get('keyword')
-    console.log('keyword: ', keyword)
     try {
       const response = await axios({
         method: 'GET',
@@ -70,7 +65,6 @@ const BulletinPage = ({ socket }) => {
         },
       })
 
-      console.log('RESPONSE: ', response)
       const { questions: questionData, next_paging } = response.data
 
       if (loadmorePage) {
@@ -111,7 +105,6 @@ const BulletinPage = ({ socket }) => {
   }
 
   useEffect(() => {
-    console.log('location', location)
     getQuestions()
     setPaging(0)
   }, [location])

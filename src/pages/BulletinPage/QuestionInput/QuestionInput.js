@@ -38,7 +38,6 @@ const QuestionInput = ({ picture, setPicture }) => {
         method: 'GET',
         url: '/user/info',
       })
-      console.log('USER INFO: ', response.data)
       const { nickname, picture_URL } = response.data
       setNickname(nickname)
       setPicture(picture_URL)
@@ -66,7 +65,6 @@ const QuestionInput = ({ picture, setPicture }) => {
           content: questionContent,
         },
       })
-      console.log(response)
       setQuestionContent('')
       if (response.status === 200) {
         Swal.fire({
@@ -97,9 +95,6 @@ const QuestionInput = ({ picture, setPicture }) => {
       url: '/questions/status',
     })
     const { alreadyCreatedQuestion, question } = response.data
-
-    console.log('get status', response.data)
-
     setIsCreated(alreadyCreatedQuestion)
     setQuestionInfo(question)
   }

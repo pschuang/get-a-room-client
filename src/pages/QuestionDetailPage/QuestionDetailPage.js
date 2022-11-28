@@ -6,7 +6,6 @@ import Header from '../../components/Header/Header'
 
 const QuestionDetailPage = ({ socket }) => {
   const { id } = useParams()
-  console.log(id)
   return (
     <>
       <Header socket={socket} />

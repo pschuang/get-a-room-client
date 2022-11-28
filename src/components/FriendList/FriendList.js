@@ -12,13 +12,10 @@ const FriendList = () => {
 
   const getFriends = async () => {
     const response = await axios.get(`/friends`)
-    console.log(response.data)
     setFriends(response.data.friends)
   }
 
   const createChatWithFriend = (friend) => {
-    console.log(friend.roomId)
-    // socket.emit('join-room', { roomId: friend.roomId })
     navigate(`/friendChat/${friend.roomId}`)
   }
 

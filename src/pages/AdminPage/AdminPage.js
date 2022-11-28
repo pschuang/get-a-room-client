@@ -100,7 +100,6 @@ const AdminPage = ({ socket }) => {
         method: 'GET',
         url: `/admin/stats`,
       })
-      console.log('WEEK questions: ', response.data)
       setQuestionsInAWeek(response.data.questionsInAWeek)
       setPageViewsInAWeek(response.data.pageViewsInAWeek)
     } catch (error) {
@@ -143,13 +142,11 @@ const AdminPage = ({ socket }) => {
 
   // online-count event
   socket.on('online-count', (count) => {
-    console.log('online counts: ', count)
     setOnlineCount(count)
   })
 
   // refresh-dashboard-success
   socket.on('refresh-dashboard-success', (data) => {
-    console.log('refresh-dashboard-success......')
     const {
       askedQuestionCount,
       openQuestionCount,
@@ -158,7 +155,6 @@ const AdminPage = ({ socket }) => {
       friendshipCount,
       replyCount,
     } = data
-    console.log('DATA: ', data)
     setAskedQuestionCount(askedQuestionCount)
     setOpenQuestionCount(openQuestionCount)
     setQuestionCountByCategory(questionCountByCategory)
@@ -168,7 +164,6 @@ const AdminPage = ({ socket }) => {
   })
 
   socket.on('recent-match', (data) => {
-    console.log('recent-match......')
     setRecentMatchDataQueue([data, ...recentMatchDataQueue])
   })
 
