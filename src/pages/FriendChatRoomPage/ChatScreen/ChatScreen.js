@@ -90,6 +90,13 @@ const ChatScreen = ({ socket, roomId }) => {
     console.log(err.message) // prints the message associated with the error
   })
 
+  const handleKeypress = (e) => {
+    if (e.key === 'Enter') {
+      console.log('enter key is press')
+      sendMessageToFriend()
+    }
+  }
+
   return (
     <div className="chat-screen">
       <div className="chat-header">
@@ -118,8 +125,13 @@ const ChatScreen = ({ socket, roomId }) => {
           placeholder="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={handleKeypress}
         />
-        <button className="send-button" onClick={sendMessageToFriend}>
+        <button
+          className="send-button"
+          onClick={sendMessageToFriend}
+          type="submit"
+        >
           Send
         </button>
       </div>

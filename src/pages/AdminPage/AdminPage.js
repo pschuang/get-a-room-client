@@ -40,6 +40,7 @@ const AdminPage = ({ socket }) => {
   const [questionsInAWeek, setQuestionsInAWeek] = useState([])
   const [pageViewsInAWeek, setPageViewsInAWeek] = useState([])
   const [recentMatchDataQueue, setRecentMatchDataQueue] = useState([])
+  const [isBulletinOpen, setIsBulletinOpen] = useState(true)
   const navigate = useNavigate()
 
   const doughnutData = {
@@ -125,6 +126,21 @@ const AdminPage = ({ socket }) => {
     return () => clearInterval(pollingTimer)
   }, [])
 
+  // Bulletin open or not
+  const getTime = async () => {
+    try {
+      await axios.get(`/common/time`)
+      setIsBulletinOpen(true)
+    } catch (err) {
+      console.log(err)
+      setIsBulletinOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    getTime()
+  }, [])
+
   // online-count event
   socket.on('online-count', (count) => {
     console.log('online counts: ', count)
@@ -163,10 +179,17 @@ const AdminPage = ({ socket }) => {
         <div className="dashboard-container">
           <div className="dashboard-header">
             <h1>Dashboard</h1>
-            <div className="bulletin-open-signal">
-              <div className="signal-light"></div>
-              <p>Bulletin Open</p>
-            </div>
+            {isBulletinOpen ? (
+              <div className="bulletin-open-signal">
+                <div className="signal-light"></div>
+                <p>Bulletin Open</p>
+              </div>
+            ) : (
+              <div className="bulletin-close-signal">
+                <div className="signal-light"></div>
+                <p>Bulletin Closed</p>
+              </div>
+            )}
           </div>
           <div className="dashboard-upper-content">
             <div className="dashboard-upper-content-left">

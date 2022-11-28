@@ -38,6 +38,24 @@
   height: 10px;
 }
 
+.bulletin-close-signal {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background-color: #555555;
+  padding: 15px 20px;
+  border-radius: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.signal-light {
+  border-radius: 50%;
+  background-color: white;
+  width: 10px;
+  height: 10px;
+}
+
 .dashboard-upper-content {
   display: flex;
   justify-content: flex-end;
