@@ -12,7 +12,7 @@ import { io } from 'socket.io-client'
 const App = () => {
   // 一進到頁面就建立 socket 物件
   const [socket, setSocket] = useState(
-    io('http://localhost:8000', {
+    io(process.env.REACT_APP_BASE_URL, {
       autoConnect: false,
       auth: { token: window.localStorage.getItem('access_token') },
     })
