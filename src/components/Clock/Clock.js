@@ -56,7 +56,12 @@ const Clock = ({ socket }) => {
   return (
     <div className="clock">
       {isCountingDown ? (
-        <h3>{remainingTime}</h3>
+        <h3>
+          {Math.floor(remainingTime / 60)} :
+          {remainingTime % 60 >= 10
+            ? ' ' + (remainingTime % 60)
+            : ' 0' + (remainingTime % 60)}
+        </h3>
       ) : (
         closeTime && (
           <>

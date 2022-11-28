@@ -153,7 +153,6 @@ const AdminPage = ({ socket }) => {
 
   socket.on('recent-match', (data) => {
     console.log('recent-match......')
-    console.log('DATA: ', data)
     setRecentMatchDataQueue([data, ...recentMatchDataQueue])
   })
 

@@ -64,6 +64,7 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
           <input
             id="password"
             value={password}
+            type="password"
             onChange={(e) => setPassword(e.target.value)}
           ></input>
         </form>
