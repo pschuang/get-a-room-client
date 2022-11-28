@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import './ChatScreen.css'
 import axios from '../../../api/axios'
 import Swal from 'sweetalert2'
@@ -8,12 +8,17 @@ var utc = require('dayjs/plugin/utc')
 dayjs.extend(utc)
 
 const ChatScreen = ({ socket, roomId }) => {
-  console.log('now in chatscreen component...')
   const [message, setMessage] = useState('')
   const [messageQueue, setMessageQueue] = useState([])
   const [counterpartInfo, setCounterpartInfo] = useState({})
+  const [notification, setNotification] = useState(
+    `Your counterpart hasn't joined yet`
+  )
+  const [isActiveUser, setIsActiveUser] = useState(false)
   const userId = window.localStorage.getItem('user_id')
   const navigate = useNavigate()
+  let [searchParams, setSearchParams] = useSearchParams()
+
   const messageEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -24,6 +29,7 @@ const ChatScreen = ({ socket, roomId }) => {
 
   useEffect(() => {
     getCounterpartInfo()
+    setIsActiveUser(searchParams.get('isActive'))
   }, [])
 
   const getCounterpartInfo = async () => {
@@ -32,7 +38,6 @@ const ChatScreen = ({ socket, roomId }) => {
         method: 'GET',
         url: `/chatroom/counterpart/${roomId}`,
       })
-      console.log('COUNTERPARTUSER INFO: ', response.data)
       setCounterpartInfo(response.data.user)
     } catch (error) {
       console.log('ERROR', error)
@@ -59,16 +64,12 @@ const ChatScreen = ({ socket, roomId }) => {
   }
 
   socket.on('receive-message', (data) => {
-    // console.log('receive a message')
-    console.log(data, messageQueue)
-
     setMessageQueue([...messageQueue, data])
   })
 
   // 開啟配對聊天室之後，後端會發送 match-time-end 事件
   socket.on('match-time-end', () => {
     // 結束之後要加好友
-    console.log("time's up!")
     Swal.fire({
       title: 'Do you want to be friend?',
       showDenyButton: true,
@@ -102,10 +103,15 @@ const ChatScreen = ({ socket, roomId }) => {
 
   const handleKeypress = (e) => {
     if (e.key === 'Enter') {
-      console.log('enter key is press')
       sendMessage()
     }
   }
+
+  socket.on('counterpart-has-joined', () => {
+    setNotification(
+      'Your counterpart just joined the room, start counting down...'
+    )
+  })
 
   return (
     <div className="chat-screen">
@@ -114,6 +120,9 @@ const ChatScreen = ({ socket, roomId }) => {
         <b>{counterpartInfo.nickname}</b>
       </div>
       <div className="message-container">
+        {isActiveUser && (
+          <div className="chat-notification">{notification}</div>
+        )}
         {messageQueue.map((message, index) => (
           <div
             key={index}

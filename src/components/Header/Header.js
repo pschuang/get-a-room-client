@@ -22,7 +22,6 @@ const Header = ({ socket }) => {
         method: 'GET',
         url: '/user/info',
       })
-      console.log('USER INFO: ', response.data)
       const { nickname, picture_URL } = response.data
       setNickname(nickname)
       setPicture(picture_URL)
@@ -44,11 +43,8 @@ const Header = ({ socket }) => {
 
   // 如果有 create-room-ok 就轉頁
   socket.on('create-room-ok', ({ roomId, counterpart, isPassive }) => {
-    console.log('create-room-ok from the header component')
-    console.log('room id: ', roomId)
-    console.log('counterpart: ', counterpart)
     if (!isPassive) {
-      navigate(`/matchChat/${roomId}`)
+      navigate(`/matchChat/${roomId}?isActive=true`)
     } else {
       // show popup to notify
       Swal.fire({
