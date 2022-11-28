@@ -15,6 +15,10 @@
   right: 0;
 }
 
+.admin {
+  background-color: #7c41ce;
+}
+
 .logo {
   cursor: pointer;
   padding-top: 4px;

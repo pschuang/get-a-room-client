@@ -1,6 +1,6 @@
 import './Header.css'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import axios from '../../api/axios'
 import Swal from 'sweetalert2'
 import Clock from '../Clock/Clock'
@@ -9,12 +9,20 @@ const Header = ({ socket }) => {
   const [nickname, setNickname] = useState('')
   const [picture, setPicture] = useState('')
   const [isSignedIn, setIsSignIn] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     getUserInfo()
   }, [])
+
+  useEffect(() => {
+    if (location.pathname === '/admin') {
+      setIsAdmin(true)
+    }
+  }, [location])
 
   const getUserInfo = async () => {
     try {
@@ -106,7 +114,7 @@ const Header = ({ socket }) => {
 
   return (
     <>
-      <div className="header">
+      <div className={`header ${isAdmin ? 'admin' : ''}`}>
         <div
           className="logo"
           onClick={() => {
@@ -121,7 +129,7 @@ const Header = ({ socket }) => {
           {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
         </div>
       </div>
-      <Clock socket={socket} />
+      {!isAdmin && <Clock socket={socket} />}
     </>
   )
 }

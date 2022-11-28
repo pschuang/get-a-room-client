@@ -36,3 +36,11 @@ p {
 input:focus {
   outline: none;
 }
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.3)
+}
