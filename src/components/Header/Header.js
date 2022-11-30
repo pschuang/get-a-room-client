@@ -9,7 +9,8 @@ const Header = ({ socket }) => {
   const [nickname, setNickname] = useState('')
   const [picture, setPicture] = useState('')
   const [isSignedIn, setIsSignIn] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdminPage, setIsAdminPage] = useState(false)
+  const [isAdminRole, setIsAdminRole] = useState(false)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -20,7 +21,7 @@ const Header = ({ socket }) => {
 
   useEffect(() => {
     if (location.pathname === '/admin') {
-      setIsAdmin(true)
+      setIsAdminPage(true)
     }
   }, [location])
 
@@ -30,10 +31,14 @@ const Header = ({ socket }) => {
         method: 'GET',
         url: '/user/info',
       })
-      const { nickname, picture_URL } = response.data
+      const { nickname, picture_URL, role } = response.data
+      console.log(response.data)
       setNickname(nickname)
       setPicture(picture_URL)
       setIsSignIn(true)
+      if (role === 1) {
+        setIsAdminRole(true)
+      }
     } catch (error) {
       console.log('ERROR', error)
       Swal.fire({
@@ -112,9 +117,13 @@ const Header = ({ socket }) => {
     })
   }
 
+  const handleToDashboard = () => {
+    navigate('/admin')
+  }
+
   return (
     <>
-      <div className={`header ${isAdmin ? 'admin' : ''}`}>
+      <div className={`header ${isAdminPage ? 'admin' : ''}`}>
         <div
           className="logo"
           onClick={() => {
@@ -124,12 +133,15 @@ const Header = ({ socket }) => {
           <img src="/get-a-room-white.svg" alt="" />
         </div>
         <div className="header-right">
+          {isAdminRole && (
+            <button onClick={handleToDashboard}>Dashboard</button>
+          )}
           <img src={picture} alt="" />
           <div>{nickname}</div>
           {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
         </div>
       </div>
-      {!isAdmin && <Clock socket={socket} />}
+      {!isAdminPage && <Clock socket={socket} />}
     </>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './AdminPage.css'
 import axios from '../../api/axios'
+import Swal from 'sweetalert2'
 import Header from '../../components/Header/Header'
 import {
   Chart as ChartJS,
@@ -41,6 +42,7 @@ const AdminPage = ({ socket }) => {
   const [pageViewsInAWeek, setPageViewsInAWeek] = useState([])
   const [recentMatchDataQueue, setRecentMatchDataQueue] = useState([])
   const [isBulletinOpen, setIsBulletinOpen] = useState(true)
+  const [isAdminRole, setIsAdminRole] = useState(false)
   const navigate = useNavigate()
 
   const doughnutData = {
@@ -102,9 +104,19 @@ const AdminPage = ({ socket }) => {
       })
       setQuestionsInAWeek(response.data.questionsInAWeek)
       setPageViewsInAWeek(response.data.pageViewsInAWeek)
+      setIsAdminRole(true)
     } catch (error) {
       console.log('ERROR', error)
-      navigate(`/`)
+      Swal.fire({
+        title: 'Oops!',
+        text: 'not allowed to view this page, redirecting to bulletin',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate(`/`)
+        }
+      })
     }
   }
 
@@ -169,111 +181,113 @@ const AdminPage = ({ socket }) => {
 
   return (
     <>
-      <div className="dashboard-main-page-container">
-        <Header socket={socket} />
-        <div className="dashboard-container">
-          <div className="dashboard-header">
-            <h1>Dashboard</h1>
-            {isBulletinOpen ? (
-              <div className="bulletin-open-signal">
-                <div className="signal-light"></div>
-                <p>Bulletin Open</p>
+      {isAdminRole && (
+        <div className="dashboard-main-page-container">
+          <Header socket={socket} />
+          <div className="dashboard-container">
+            <div className="dashboard-header">
+              <h1>Dashboard</h1>
+              {isBulletinOpen ? (
+                <div className="bulletin-open-signal">
+                  <div className="signal-light"></div>
+                  <p>Bulletin Open</p>
+                </div>
+              ) : (
+                <div className="bulletin-close-signal">
+                  <div className="signal-light"></div>
+                  <p>Bulletin Closed</p>
+                </div>
+              )}
+            </div>
+            <div className="dashboard-upper-content">
+              <div className="dashboard-upper-content-left">
+                <div className="online-user">
+                  <p>Online Users</p>
+                  <span>{onlineCount}</span>
+                </div>
+                <div className="new-register">
+                  <p>New Register</p>
+                  <span>{newRegisterCount}</span>
+                </div>
               </div>
-            ) : (
-              <div className="bulletin-close-signal">
-                <div className="signal-light"></div>
-                <p>Bulletin Closed</p>
+              <div className="dashboard-upper-content-middle">
+                <p>Page Views</p>
+                <Line
+                  data={lineChartData}
+                  options={{
+                    plugins: { legend: { display: false } },
+                    aspectRatio: 3 / 1,
+                  }}
+                />
               </div>
-            )}
-          </div>
-          <div className="dashboard-upper-content">
-            <div className="dashboard-upper-content-left">
-              <div className="online-user">
-                <p>Online Users</p>
-                <span>{onlineCount}</span>
-              </div>
-              <div className="new-register">
-                <p>New Register</p>
-                <span>{newRegisterCount}</span>
+              <div className="dashboard-upper-content-right">
+                <p>Weekly Statistics</p>
+                <Bar
+                  data={barChartData}
+                  options={{
+                    aspectRatio: 3 / 2,
+                    plugins: { legend: { display: false } },
+                  }}
+                />
               </div>
             </div>
-            <div className="dashboard-upper-content-middle">
-              <p>Page Views</p>
-              <Line
-                data={lineChartData}
-                options={{
-                  plugins: { legend: { display: false } },
-                  aspectRatio: 3 / 1,
-                }}
-              />
-            </div>
-            <div className="dashboard-upper-content-right">
-              <p>Weekly Statistics</p>
-              <Bar
-                data={barChartData}
-                options={{
-                  aspectRatio: 3 / 2,
-                  plugins: { legend: { display: false } },
-                }}
-              />
-            </div>
-          </div>
-          <div className="dashboard-lower-content">
-            <div className="dashboard-lower-content-box">
-              <p>Recent Matches</p>
-              <div className="broadcast-box">
-                {recentMatchDataQueue.map((data, index) => {
-                  return (
-                    <div key={`match-${index}`}>
-                      {`user ${data.users[0]} and user ${data.users[1]}
+            <div className="dashboard-lower-content">
+              <div className="dashboard-lower-content-box">
+                <p>Recent Matches</p>
+                <div className="broadcast-box">
+                  {recentMatchDataQueue.map((data, index) => {
+                    return (
+                      <div key={`match-${index}`}>
+                        {`user ${data.users[0]} and user ${data.users[1]}
                       matched @ ${dayjs(data.time)
                         .utc(true)
                         .local()
                         .format('YYYY-MM-DD HH:mm:ss')}
                       `}
-                    </div>
-                  )
-                })}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="dashboard-lower-content-box">
-              <div className="stat-item">
-                <p>Asked Questions</p>
-                <span>{askedQuestionCount}</span>
+              <div className="dashboard-lower-content-box">
+                <div className="stat-item">
+                  <p>Asked Questions</p>
+                  <span>{askedQuestionCount}</span>
+                </div>
+                <div className="stat-item">
+                  <p>Open Questions</p>
+                  <span>{openQuestionCount}</span>
+                </div>
+                <div className="stat-item">
+                  <p>Total Replies</p>
+                  <span>{replyCount}</span>
+                </div>
+                <div className="stat-item">
+                  <p>New Friendships</p>
+                  <span>{friendshipCount}</span>
+                </div>
               </div>
-              <div className="stat-item">
-                <p>Open Questions</p>
-                <span>{openQuestionCount}</span>
-              </div>
-              <div className="stat-item">
-                <p>Total Replies</p>
-                <span>{replyCount}</span>
-              </div>
-              <div className="stat-item">
-                <p>New Friendships</p>
-                <span>{friendshipCount}</span>
-              </div>
-            </div>
-            <div className="dashboard-lower-content-box">
-              <p>By Category</p>
-              <Doughnut
-                data={doughnutData}
-                options={{
-                  aspectRatio: 2 / 1,
-                  cutoutPercentage: 100,
-                  layout: { marginTop: 10 },
-                  plugins: {
-                    legend: {
-                      position: 'right',
-                      maxWidth: 200,
+              <div className="dashboard-lower-content-box">
+                <p>By Category</p>
+                <Doughnut
+                  data={doughnutData}
+                  options={{
+                    aspectRatio: 2 / 1,
+                    cutoutPercentage: 100,
+                    layout: { marginTop: 10 },
+                    plugins: {
+                      legend: {
+                        position: 'right',
+                        maxWidth: 200,
+                      },
                     },
-                  },
-                }}
-              />
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   )
 }
