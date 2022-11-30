@@ -14,11 +14,22 @@
 .main-page-container {
   background-color: #fff174;
   min-height: 100vh;
-  padding-top: 70px;
+  padding-top: 100px;
 }
 
 .page-right-container {
   padding-left: 350px;
+}
+
+.rule-banner {
+  background-color: #ff5959;
+  padding: 10px;
+  width: 20%;
+  position: fixed;
+  right: 0;
+  top: 70px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .main-content-container {

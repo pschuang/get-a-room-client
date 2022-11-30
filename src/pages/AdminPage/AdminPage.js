@@ -109,7 +109,7 @@ const AdminPage = ({ socket }) => {
       console.log('ERROR', error)
       Swal.fire({
         title: 'Oops!',
-        text: 'not allowed to view this page, redirecting to bulletin',
+        text: 'Not allowed to view this page, redirecting to bulletin',
         allowOutsideClick: false,
         allowEscapeKey: false,
       }).then((result) => {

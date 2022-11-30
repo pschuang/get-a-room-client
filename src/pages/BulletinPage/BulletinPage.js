@@ -8,6 +8,7 @@ import ReplyPopUp from './ReplyPopUp/ReplyPopUp'
 import FriendList from '../../components/FriendList/FriendList'
 import Header from '../../components/Header/Header'
 import dayjs from 'dayjs'
+import Swal from 'sweetalert2'
 
 export const categoryList = [
   { color: '#333333', name: 'all' },
@@ -50,6 +51,13 @@ const BulletinPage = ({ socket }) => {
   const handleClearFilter = () => {
     searchParams.set('category', 'all')
     setSearchParams()
+  }
+
+  const handleRuleClick = () => {
+    Swal.fire({
+      title: 'Get a room rules',
+      html: '<div style="margin-left:60px"><p style="line-height:120%" align="justify">1. Bulletin open for 20 mins, once a day <br> 2. You can post 1 question, replies not limited <br> 3. Once matched, you can chat for 15 mins <br> 4. When match ends, decide to be friends in 30s</p></div>',
+    })
   }
 
   const getQuestions = async (loadmorePage) => {
@@ -120,6 +128,9 @@ const BulletinPage = ({ socket }) => {
         <FriendList />
         <div className="page-right-container">
           <div className="main-content-container">
+            <button className="rule-banner" onClick={handleRuleClick}>
+              Check playground rule
+            </button>
             {isBulletinClosed ? (
               <div className="closed-container">
                 <img src="/closed.png" width="40%" alt="" />
