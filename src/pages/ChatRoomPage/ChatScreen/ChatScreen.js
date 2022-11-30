@@ -20,7 +20,6 @@ const ChatScreen = ({ socket, roomId }) => {
   let [searchParams, setSearchParams] = useSearchParams()
 
   const messageEndRef = useRef(null)
-
   const scrollToBottom = () => {
     messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
@@ -68,10 +67,13 @@ const ChatScreen = ({ socket, roomId }) => {
   })
 
   // 開啟配對聊天室之後，後端會發送 match-time-end 事件
-  socket.on('match-time-end', () => {
+  socket.on('match-time-end', ({ DECIDE_TO_BE_FRIEND_TIME_SPAN }) => {
     // 結束之後要加好友
     Swal.fire({
       title: 'Do you want to be friend?',
+      text: `You have ${
+        DECIDE_TO_BE_FRIEND_TIME_SPAN / 1000
+      } seconds to decide.`,
       showDenyButton: true,
       confirmButtonText: 'YES',
       denyButtonText: `NO`,
@@ -113,6 +115,17 @@ const ChatScreen = ({ socket, roomId }) => {
     )
   })
 
+  socket.on('counterpart-left-chatroom', () => {
+    console.log('counterpart has left')
+    setMessageQueue([
+      ...messageQueue,
+      {
+        isNotification: true,
+        notification: 'Your counterpart has left...',
+      },
+    ])
+  })
+
   return (
     <div className="chat-screen">
       <div className="chat-header">
@@ -123,19 +136,26 @@ const ChatScreen = ({ socket, roomId }) => {
         {isActiveUser && (
           <div className="chat-notification">{notification}</div>
         )}
-        {messageQueue.map((message, index) => (
-          <div
-            key={index}
-            className={
-              message.userId == userId ? 'my-message' : 'counterpart-message'
-            }
-          >
-            <div className="message-time">
-              {dayjs(message.created_at).utc(true).local().format('HH:mm')}
+        {messageQueue.map((message, index) => {
+          if (message.isNotification) {
+            return (
+              <div className="chat-notification">{message.notification}</div>
+            )
+          }
+          return (
+            <div
+              key={index}
+              className={
+                message.userId == userId ? 'my-message' : 'counterpart-message'
+              }
+            >
+              <div className="message-time">
+                {dayjs(message.created_at).utc(true).local().format('HH:mm')}
+              </div>
+              <div className="message-content">{message.message}</div>
             </div>
-            <div className="message-content">{message.message}</div>
-          </div>
-        ))}
+          )
+        })}
         <div ref={messageEndRef}></div>
       </div>
       <div className="send-container">
