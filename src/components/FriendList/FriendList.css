@@ -37,3 +37,19 @@
 h2 {
   text-align: center;
 }
+
+.status-signal-on {
+  border-radius: 50%;
+  background-color: greenyellow;
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+}
+
+.status-signal-off {
+  border-radius: 50%;
+  background-color: darkgrey;
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+}
