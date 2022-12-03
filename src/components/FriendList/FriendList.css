@@ -3,11 +3,11 @@
 }
 
 .friend-list {
+  background-color: #fff174;
   width: 350px;
   height: 100vh;
   border-right: 2px solid #333333;
   padding: 20px 0;
-  background-color: #fff3ca;
   position: fixed;
   top: 70px;
   height: calc(100vh - 140px);

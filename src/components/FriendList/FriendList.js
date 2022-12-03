@@ -40,27 +40,33 @@ const FriendList = ({ socket }) => {
   return (
     <div className="friend-list">
       <h2>Roomies</h2>
-      {friends.map((friend) => (
-        <div
-          key={friend.userId}
-          onClick={() => {
-            createChatWithFriend(friend)
-          }}
-          className="friend"
-        >
-          <img src={friend.pictureURL} alt="" />
-          <p>
-            <b>{friend.nickname}</b>
-          </p>
+      {friends.length === 0 ? (
+        <h4 style={{ textAlign: 'center', marginTop: '20px' }}>
+          No friends yet
+        </h4>
+      ) : (
+        friends.map((friend) => (
           <div
-            className={
-              onlineFriendIds.includes(friend.userId)
-                ? 'status-signal-on'
-                : 'status-signal-off'
-            }
-          ></div>
-        </div>
-      ))}
+            key={friend.userId}
+            onClick={() => {
+              createChatWithFriend(friend)
+            }}
+            className="friend"
+          >
+            <img src={friend.pictureURL} alt="" />
+            <p>
+              <b>{friend.nickname}</b>
+            </p>
+            <div
+              className={
+                onlineFriendIds.includes(friend.userId)
+                  ? 'status-signal-on'
+                  : 'status-signal-off'
+              }
+            ></div>
+          </div>
+        ))
+      )}
     </div>
   )
 }
