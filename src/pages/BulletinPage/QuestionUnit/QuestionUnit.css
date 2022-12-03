@@ -17,7 +17,7 @@
 .question-box {
   display: flex;
   flex-direction: column;
-  background-color: aliceblue;
+  background-color: white;
   width: 214px;
   height: 204px;
   border-radius: 9px 0px 9px 9px;

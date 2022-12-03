@@ -8,7 +8,6 @@ import Clock from '../Clock/Clock'
 const Header = ({ socket }) => {
   const [nickname, setNickname] = useState('')
   const [picture, setPicture] = useState('')
-  const [isSignedIn, setIsSignIn] = useState(false)
   const [isAdminPage, setIsAdminPage] = useState(false)
   const [isAdminRole, setIsAdminRole] = useState(false)
 
@@ -35,7 +34,6 @@ const Header = ({ socket }) => {
       console.log(response.data)
       setNickname(nickname)
       setPicture(picture_URL)
-      setIsSignIn(true)
       if (role === 1) {
         setIsAdminRole(true)
       }
@@ -83,7 +81,6 @@ const Header = ({ socket }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(`/`)
-        window.location.reload()
       }
     })
   })
@@ -101,11 +98,9 @@ const Header = ({ socket }) => {
   })
 
   const handleLogout = () => {
-    // socket.emit('logout')
     socket.disconnect()
     window.localStorage.removeItem('user_id')
     window.localStorage.removeItem('access_token')
-    setIsSignIn(false)
     Swal.fire({
       title: "You've logged out",
       allowOutsideClick: false,
@@ -136,9 +131,9 @@ const Header = ({ socket }) => {
           {isAdminRole && (
             <button onClick={handleToDashboard}>Dashboard</button>
           )}
-          <img src={picture} alt="" />
-          <div>{nickname}</div>
-          {isSignedIn && <button onClick={handleLogout}>Log Out</button>}
+          {picture && <img src={picture} alt="" />}
+          {nickname && <div>{nickname}</div>}
+          {<button onClick={handleLogout}>Log Out</button>}
         </div>
       </div>
       {!isAdminPage && <Clock socket={socket} />}

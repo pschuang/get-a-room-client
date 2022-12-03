@@ -106,7 +106,7 @@ const SignUpBox = () => {
           ></input>
           <span className="password-rule">
             At least 8 characters. <br /> Should contain an uppercase letter, a
-            lowercase letter, a number and a specail character.
+            lowercase letter, a number and a special character.
           </span>
           <label htmlFor="confirm-password">Confirm Password</label>
           <input
