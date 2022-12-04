@@ -156,8 +156,12 @@ const AdminPage = ({ socket }) => {
   }, [])
 
   // online-count event
-  socket.on('online-count', (count) => {
-    setOnlineCount(count)
+  socket.on('online-count', ({ onlineCounts, recentMatches }) => {
+    setOnlineCount(onlineCounts)
+
+    if (recentMatches) {
+      setRecentMatchDataQueue(recentMatches)
+    }
   })
 
   // refresh-dashboard-success
