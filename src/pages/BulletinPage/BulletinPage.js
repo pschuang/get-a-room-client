@@ -26,6 +26,7 @@ const BulletinPage = ({ socket }) => {
   const [questions, setQuestions] = useState([])
   const [paging, setPaging] = useState(0)
   const [isNextPage, SetIsNextPage] = useState(false)
+  const [forceFriendListUpdate, setForceFriendListUpdate] = useState(0)
 
   const [isShowReplyPopUp, setIsShowReplyPopUp] = useState(false)
   const [selectedQuestion, setSelectedQuestion] = useState({})
@@ -62,8 +63,9 @@ const BulletinPage = ({ socket }) => {
 
   const handleRuleClick = () => {
     Swal.fire({
-      title: 'Get a room rules',
-      html: `<div style="margin-left:30px"><p style="line-height:120%" align="justify">1.  Bulletin open for 20 mins, once a day <br>2. You can post 1 question, and create multiple replies. <br>3. Pick a reply or wait to be picked to create a chatroom. <br>4. Once matched, you can chat for 15 mins <br>5. When match ends, decide to be friends in 30s</p></div>`,
+      title: "'GET A ROOM' RULES",
+      // html: `<div style="margin-left:30px"><p style="line-height:120%" align="justify">1.  Bulletin open for 20 mins, once a day <br>2. You can post 1 question, and create multiple replies. <br>3. Pick a reply or wait to be picked to create a chatroom. <br>4. Once matched, you can chat for 15 mins <br>5. When match ends, decide to be friends in 30s</p></div>`,
+      html: `<img width="400px" src="/rules.png" alt=""/>`,
     })
   }
 
@@ -138,8 +140,11 @@ const BulletinPage = ({ socket }) => {
   return (
     <>
       <div className="main-page-container">
-        <Header socket={socket} />
-        <FriendList socket={socket} />
+        <Header
+          socket={socket}
+          onForceFriendListUpdate={setForceFriendListUpdate}
+        />
+        <FriendList socket={socket} key={forceFriendListUpdate} />
         <div className="page-right-container">
           <div className="main-content-container">
             <button className="rule-banner" onClick={handleRuleClick}>
@@ -151,9 +156,9 @@ const BulletinPage = ({ socket }) => {
                 <img src="/closed.png" width="40%" alt="" />
                 <br />
                 <h2>
-                  今日開放時間: {openTime} - {closedTime}
+                  Today Open: {openTime} - {closedTime}
                 </h2>
-                <h2>明日開放時間: {nextOpenTime}</h2>
+                <h2>Tomorrow Open at: {nextOpenTime}</h2>
               </div>
             ) : (
               <div className="bulletin-main-container">

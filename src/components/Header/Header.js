@@ -5,7 +5,7 @@ import axios from '../../api/axios'
 import Swal from 'sweetalert2'
 import Clock from '../Clock/Clock'
 
-const Header = ({ socket }) => {
+const Header = ({ socket, onForceFriendListUpdate }) => {
   const [nickname, setNickname] = useState('')
   const [picture, setPicture] = useState('')
   const [isAdminPage, setIsAdminPage] = useState(false)
@@ -78,9 +78,12 @@ const Header = ({ socket }) => {
     Swal.fire({
       title: 'Congrats!',
       text: 'You have a new friend!',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(`/`)
+        onForceFriendListUpdate((prev) => prev + 1)
       }
     })
   })
@@ -90,6 +93,8 @@ const Header = ({ socket }) => {
     Swal.fire({
       title: 'Ouch!',
       text: 'Match failed, please come back tmr.',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(`/`)
