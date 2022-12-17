@@ -92,3 +92,9 @@ span {
 .picture-active {
   border: 3px solid #6e696b;
 }
+
+.password-rule {
+  color: grey;
+  font-size: 9px;
+  margin:0 0 9px 0
+}

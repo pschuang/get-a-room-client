@@ -25,11 +25,12 @@ const QuestionDetail = ({ questionId, socket }) => {
       setContent(response.data.content)
       setRepliers(response.data.repliers)
       setIsClosed(response.data.isClosed)
-      console.log(response.data)
     } catch (error) {
       Swal.fire({
         title: 'Oops!',
         text: error.response.data.message,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/`)

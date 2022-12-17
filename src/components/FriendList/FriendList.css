@@ -3,14 +3,14 @@
 }
 
 .friend-list {
+  background-color: #fff174;
   width: 350px;
   height: 100vh;
   border-right: 2px solid #333333;
   padding: 20px 0;
-  background-color: #fff3ca;
   position: fixed;
   top: 70px;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 140px);
   overflow-y: auto;
 }
 
@@ -36,4 +36,20 @@
 
 h2 {
   text-align: center;
+}
+
+.status-signal-on {
+  border-radius: 50%;
+  background-color: greenyellow;
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+}
+
+.status-signal-off {
+  border-radius: 50%;
+  background-color: darkgrey;
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
 }

@@ -6,12 +6,13 @@ import FriendChatRoomPage from './pages/FriendChatRoomPage/FriendChatRoomPage'
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage'
 import SignUpPage from './pages/SignUpPage/SignUpPage'
 import SignInPage from './pages/SignInPage/SignInPage'
+import AdminPage from './pages/AdminPage/AdminPage'
 import { io } from 'socket.io-client'
 
 const App = () => {
   // 一進到頁面就建立 socket 物件
   const [socket, setSocket] = useState(
-    io('http://localhost:8000', {
+    io(process.env.REACT_APP_BASE_URL, {
       autoConnect: false,
       auth: { token: window.localStorage.getItem('access_token') },
     })
@@ -22,11 +23,7 @@ const App = () => {
   const checkUserData = () => {
     const item = window.localStorage.getItem('access_token')
     if (item) {
-      console.log('before auth token', socket.auth.token)
       socket.auth.token = item
-      console.log(socket.auth.token, 'hihihihihi connect')
-
-      // TODO: SERVER JWT get user id (user-id emit)
       socket.connect()
     }
   }
@@ -59,6 +56,15 @@ const App = () => {
         path="/signin"
         element={
           <SignInPage setIslocalStorageChanged={setIslocalStorageChanged} />
+        }
+      />
+      <Route exact path="/admin" element={<AdminPage socket={socket} />} />
+      <Route
+        path="*"
+        element={
+          <div style={{ padding: '200px', textAlign: 'center' }}>
+            <h4>404 - Not Found</h4>
+          </div>
         }
       />
     </Routes>

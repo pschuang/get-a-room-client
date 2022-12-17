@@ -34,6 +34,8 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
       Swal.fire({
         title: 'Cool!',
         text: 'Welcome!',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/`)
@@ -62,6 +64,7 @@ const SignInBox = ({ setIslocalStorageChanged }) => {
           <input
             id="password"
             value={password}
+            type="password"
             onChange={(e) => setPassword(e.target.value)}
           ></input>
         </form>

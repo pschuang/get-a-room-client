@@ -22,6 +22,7 @@ const SignUpBox = () => {
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [pictureId, setPictureId] = useState(1)
 
   // const [data, setData] = useState({})
@@ -45,19 +46,22 @@ const SignUpBox = () => {
           nickname: nickname,
           email: email,
           password: password,
+          confirm_password: confirmPassword,
           picture_id: parseInt(pictureId),
         },
       })
-      console.log(response)
       setName('')
       setNickname('')
       setEmail('')
       setPassword('')
+      setConfirmPassword('')
       setPictureId('')
 
       Swal.fire({
         title: 'Signed up successfully',
         text: 'Please sign in!',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
           navigate(`/signin`)
@@ -81,7 +85,6 @@ const SignUpBox = () => {
             value={name}
             onChange={(e) => {
               setName(e.target.value)
-              console.log(name)
             }}
           ></input>
           <label htmlFor="email">Email</label>
@@ -96,10 +99,25 @@ const SignUpBox = () => {
           <input
             id="password"
             value={password}
+            type="password"
             onChange={(e) => {
               setPassword(e.target.value)
             }}
           ></input>
+          <span className="password-rule">
+            At least 8 characters. <br /> Should contain an uppercase letter, a
+            lowercase letter, a number and a special character.
+          </span>
+          <label htmlFor="confirm-password">Confirm Password</label>
+          <input
+            id="confirm-password"
+            value={confirmPassword}
+            type="password"
+            onChange={(e) => {
+              setConfirmPassword(e.target.value)
+            }}
+          ></input>
+
           <label htmlFor="nickname">Nickname</label>
           <input
             id="nickname"

@@ -14,13 +14,14 @@ const categoryList = [
   { id: 7, color: 'blue', name: 'leisure' },
 ]
 
-const QuestionInput = ({ picture, setPicture }) => {
+const QuestionInput = ({ picture, setPicture, getQuestions, socket }) => {
   const [questionContent, setQuestionContent] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
-  const [isCreated, setIsCreated] = useState(false)
+  const [isCreated, setIsCreated] = useState(true)
   const [questionInfo, setQuestionInfo] = useState({})
   const [nickname, setNickname] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -38,7 +39,6 @@ const QuestionInput = ({ picture, setPicture }) => {
         method: 'GET',
         url: '/user/info',
       })
-      console.log('USER INFO: ', response.data)
       const { nickname, picture_URL } = response.data
       setNickname(nickname)
       setPicture(picture_URL)
@@ -66,7 +66,6 @@ const QuestionInput = ({ picture, setPicture }) => {
           content: questionContent,
         },
       })
-      console.log(response)
       setQuestionContent('')
       if (response.status === 200) {
         Swal.fire({
@@ -74,7 +73,8 @@ const QuestionInput = ({ picture, setPicture }) => {
           text: 'Created question successfully',
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.reload()
+            getCreatedQuestionStatus()
+            getQuestions()
           }
         })
       }
@@ -83,88 +83,95 @@ const QuestionInput = ({ picture, setPicture }) => {
       Swal.fire({
         title: 'Oops!',
         text: error.response.data.message,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.reload()
-        }
       })
     }
   }
 
   const getCreatedQuestionStatus = async () => {
+    setIsLoading(true)
     const response = await axios({
       method: 'GET',
       url: '/questions/status',
     })
     const { alreadyCreatedQuestion, question } = response.data
-
-    console.log('get status', response.data)
-
     setIsCreated(alreadyCreatedQuestion)
     setQuestionInfo(question)
+    // 等資料都載入完成，再顯示整個區塊
+    setIsLoading(false)
   }
 
   const toQuestionDetailPage = () => {
     navigate(`/question/${questionInfo.id}`)
   }
+
+  socket.on('new-reply', () => {
+    getCreatedQuestionStatus()
+  })
   return (
     <div className="question-input-container">
-      {isCreated ? (
-        <>
-          <div className="question-input-container-top">
-            <img src={questionInfo.pictureURL} alt="" />
-            <b>{questionInfo.nickname}</b>
-            <div>#{questionInfo.category}</div>
-          </div>
-          <p>{questionInfo.content}</p>
-          <div className="question-input-container-bottom">
-            <div className="reply-popup-container-middle">
-              <img src="/icon-comment.svg" alt="" />
-              <p>{questionInfo.reply_counts}</p>
-            </div>
-            <button onClick={toQuestionDetailPage}>View</button>
-          </div>
-        </>
+      {isLoading ? (
+        <div></div>
       ) : (
         <>
-          <div className="question-input-container-top">
-            <img src={picture} alt="" />
-            <b>{nickname}</b>
-            <div className="dropdown">
-              <div className="dropdown-header" onClick={handleOpen}>
-                {selectedCategoryId
-                  ? categoryList.find((item) => item.id === selectedCategoryId)
-                      .name
-                  : 'Select category'}
+          {isCreated ? (
+            <>
+              <div className="question-input-container-top">
+                <img src={questionInfo.pictureURL} alt="" />
+                <b>{questionInfo.nickname}</b>
+                <div>#{questionInfo.category}</div>
               </div>
-              <div
-                className="dropdown-body"
-                style={{ display: isOpen ? 'block' : 'none' }}
-              >
-                {categoryList.map((item) => {
-                  return (
-                    <div
-                      className="dropdown-item"
-                      key={item.name}
-                      onClick={() => handleItemClick(item.id)}
-                    >
-                      {item.name}
-                    </div>
-                  )
-                })}
+              <p>{questionInfo.content}</p>
+              <div className="question-input-container-bottom">
+                <div className="reply-popup-container-middle">
+                  <img src="/icon-comment.svg" alt="" />
+                  <p>{questionInfo.reply_counts}</p>
+                </div>
+                <button onClick={toQuestionDetailPage}>View</button>
               </div>
-            </div>
-          </div>
-          <div className="question-input-container-bottom">
-            <input
-              placeholder="What's on your mind?"
-              value={questionContent}
-              onChange={(e) => {
-                setQuestionContent(e.target.value)
-              }}
-            />
-            <button onClick={createQuestion}>Send</button>
-          </div>
+            </>
+          ) : (
+            <>
+              <div className="question-input-container-top">
+                <img src={picture} alt="" />
+                <b>{nickname}</b>
+                <div className="dropdown">
+                  <div className="dropdown-header" onClick={handleOpen}>
+                    {selectedCategoryId
+                      ? categoryList.find(
+                          (item) => item.id === selectedCategoryId
+                        ).name
+                      : 'Select category'}
+                  </div>
+                  <div
+                    className="dropdown-body"
+                    style={{ display: isOpen ? 'block' : 'none' }}
+                  >
+                    {categoryList.map((item) => {
+                      return (
+                        <div
+                          className="dropdown-item"
+                          key={item.name}
+                          onClick={() => handleItemClick(item.id)}
+                        >
+                          {item.name}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="question-input-container-bottom">
+                <input
+                  placeholder="What's on your mind?"
+                  value={questionContent}
+                  onChange={(e) => {
+                    setQuestionContent(e.target.value)
+                  }}
+                />
+                <button onClick={createQuestion}>Send</button>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

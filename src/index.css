@@ -36,3 +36,27 @@ p {
 input:focus {
   outline: none;
 }
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  filter: brightness(1.3);
+}
+
+* {
+  /* Firefox */
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: rgb(146, 146, 146); /* scroll thumb and track */
+}
+
+*::-webkit-scrollbar {
+  width: 10px; /* width of the entire scrollbar */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(146, 146, 146); /* color of the scroll thumb */
+  border-radius: 10px; /* roundness of the scroll thumb */
+}

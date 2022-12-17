@@ -6,12 +6,11 @@ import Header from '../../components/Header/Header'
 
 const QuestionDetailPage = ({ socket }) => {
   const { id } = useParams()
-  console.log(id)
   return (
     <>
       <Header socket={socket} />
       <div className="main-page-container">
-        <FriendList />
+        <FriendList socket={socket} />
         <div className="page-right-container">
           <div className="main-content-container">
             <QuestionDetail questionId={id} socket={socket} />
