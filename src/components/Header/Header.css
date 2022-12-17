@@ -1,0 +1,53 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  background-color: #333333;
+  text-align: center;
+  color: white;
+  padding: 0 50px;
+  gap: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+
+.admin {
+  background-color: #7c41ce;
+}
+
+.logo {
+  cursor: pointer;
+  padding-top: 4px;
+}
+
+.logo > img {
+  height: 48px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-right > h3 {
+  flex: 1;
+}
+
+.header-right > img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.header-right > button {
+  background-color: silver;
+  border-radius: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+}

@@ -1,0 +1,55 @@
+.main-container {
+  display: flex;
+}
+
+.friend-list {
+  background-color: #fff174;
+  width: 350px;
+  height: 100vh;
+  border-right: 2px solid #333333;
+  padding: 20px 0;
+  position: fixed;
+  top: 70px;
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+.friend {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 100px;
+  cursor: pointer;
+  border: 1px solid #333333;
+  box-shadow: 0px 2px 0px #333333;
+}
+
+.friend > img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.status-signal-on {
+  border-radius: 50%;
+  background-color: greenyellow;
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+}
+
+.status-signal-off {
+  border-radius: 50%;
+  background-color: darkgrey;
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+}

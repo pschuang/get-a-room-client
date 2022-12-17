@@ -1,0 +1,16 @@
+.question-detail {
+  border: 1px solid black;
+  background: #ffffff;
+  border: 1px solid #333333;
+  box-shadow: 0px 2px 0px #333333;
+  border-radius: 12px;
+  gap: 16px;
+  width: 80%;
+  margin: 10px auto;
+  padding: 56px;
+}
+
+.question-content {
+  font-weight: 700;
+  margin-bottom: 40px;
+}
